@@ -1,85 +1,159 @@
-Math Problem Generator
+# Math Problem Generator
 
-An AI-powered learning platform that generates Primary 5 level math word problems and gives personalized feedback using Google Gemini AI. Built with Next.js 14, TypeScript, Tailwind CSS, and Supabase.
+An AI-powered learning platform that generates Primary 5 level math word problems and provides personalized feedback using Google Gemini AI. Built with modern web technologies for an engaging educational experience.
 
-Live Demo
+## 🚀 Live Demo
 
-https://math-problem-generator-ten.vercel.app
+[**View Live Application**](https://math-problem-generator-ten.vercel.app)
 
-Technologies Used
+## 📋 Overview
 
-Next.js 14 (App Router)
+This application creates an interactive math learning environment where students can:
+- Generate age-appropriate math word problems
+- Receive personalized AI-powered hints
+- Track their learning progress
+- View detailed problem history and statistics
 
-TypeScript
+## 🛠️ Tech Stack
 
-Tailwind CSS
+- **Frontend Framework:** Next.js 14 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Database:** Supabase
+- **AI Integration:** Google Generative AI (Gemini 2.5-flash)
+- **Deployment:** Vercel
 
-Supabase (Database & API)
+## 🚀 Setup Instructions
 
-Google Generative AI (Gemini 2.5-flash)
+### 1. Clone the Repository
 
-How to Run Locally
+```bash
 git clone https://github.com/Mali-121/math-problem-generator.git
 cd math-problem-generator
-cp .env.local
+```
+
+### 2. Install Dependencies
+
+```bash
 npm install
-npm run dev
+```
 
-Environment Variables
+### 3. Environment Setup
+
+Create a `.env.local` file in the root directory:
+
+```env
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 GOOGLE_API_KEY=your_google_gemini_api_key
+```
 
-Supabase Credentials (for testing)
+### 4. Run Development Server
 
-These are public keys (safe to share):
+```bash
+npm run dev
+```
 
-SUPABASE_URL: https://rvbsnzhydudgcoiavwuz.supabase.co
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2YnNuemh5ZHVkZ2NvaWF2d3V6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk3MTg1NzEsImV4cCI6MjA3NTI5NDU3MX0.1k3IKzDelhuDq83SUZUifvw0xDMCF-hkTHnhpBX8tjc
+## 🗄️ Database Setup
 
-Additional Features (Optional)
- Difficulty levels (Easy/Medium/Hard) - Implemented
- Problem history view - Implemented
- Score tracking - Implemented
- Different problem types (addition, subtraction, multiplication, division) - Implemented
- Hints system - Implemented
- Step-by-step solution explanations - Implemented
+### Supabase Configuration
 
-My Implementation Notes:
+1. Create a new project at [Supabase](https://supabase.com)
+2. Run the SQL schema from `database.sql` to create required tables
+3. Update your environment variables with Supabase credentials
 
-Ai-powered Problem Generator: 
-Integrated with Gemini (2.5-flash) to generate Primary 5-level math work problems, reuturning a structured JSON with problem_text and final_answer and more. 
+### Test Credentials (Public)
 
-Personalised Feedback via Ai:
-Implmeneted a sceondary call to generate a short ecnourageing and constructive feedback based on the students answer and the original problem.
+For testing purposes, you can use these public Supabase credentials:
 
-Superbase integration: 
-Math problem are stored in math_problem_sessions
-Users answers and feeback is stored in math_problem_submissions.
+- **URL:** `https://rvbsnzhydudgcoiavwuz.supabase.co`
+- **Anon Key:** `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2YnNuemh5ZHVkZ2NvaWF2d3V6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk3MTg1NzEsImV4cCI6MjA3NTI5NDU3MX0.1k3IKzDelhuDq83SUZUifvw0xDMCF-hkTHnhpBX8tjc`
 
-Validation with Zod: 
-Added strict zod schema validation to parse and safely handle AI responses before saving them to the database.
+## ✨ Features
 
-Clean, Responsive UI:
-Built a mobile-friendly interface using Tailwind CSS with a card-based layout, consistent spacing, and intuitive input/submit flow.
+### Core Features
+- ✅ **AI Problem Generation** - Dynamic math word problems using Gemini AI
+- ✅ **Difficulty Levels** - Easy, Medium, and Hard problem variations
+- ✅ **Problem Types** - Addition, subtraction, multiplication, division, and mixed operations
+- ✅ **Intelligent Hint System** - Two-stage AI-powered hints (pre-generated + dynamic)
+- ✅ **Progress Tracking** - Score tracking and streak counting
+- ✅ **Problem History** - Complete history of attempted problems
+- ✅ **Achievement System** - Gamified learning with unlockable badges
 
-Error Handling & Loading States: 
-Included proper try/catch error handling and loading indicators during API calls to improve user experience and debug-ability.
+### Advanced Features
+- ✅ **Personalized Feedback** - AI-generated feedback based on student responses
+- ✅ **Real-time Updates** - Live statistics and history updates
+- ✅ **Responsive Design** - Mobile-friendly interface
+- ✅ **Error Handling** - Comprehensive error management and loading states
 
-Deployed on Vercel: 
-Pushed to GitHub and deployed to Vercel with all required environment variables for a smooth end-to-end demo.
+## 🎯 Key Implementation Highlights
 
-Feature i am perticularly proud of:
-One feature I’m especially proud of is the two-stage AI-driven hint system I designed to enhance the learning experience. I carefully tailored the AI prompts to avoid giving away direct answers. Instead, the hints are crafted to gently nudge the user toward the first step of solving the problem, while also offering insight into how to approach the solution logically all without spoiling it.
+### AI-Powered Problem Generator
+Integrated with Gemini 2.5-flash to generate Primary 5-level math word problems, returning structured JSON with problem text, final answer, difficulty level, and step-by-step solutions.
 
-What makes this system unique is its adaptive nature:
+### Intelligent Hint System
+**Feature I'm particularly proud of:** A sophisticated two-stage hint system that enhances learning without giving away answers:
 
-When a math problem is first generated, the AI also creates three general-purpose hints related to that problem.
+1. **Pre-generated Hints** - Three general hints created with each problem
+2. **Dynamic AI Hints** - Personalized hints generated when users submit wrong answers
 
-If the user submits an incorrect answer and then clicks the “Hint” button, the system dynamically generates a more personalized, empathetic hint based on their specific mistake.
+The AI prompts are carefully crafted to:
+- Avoid revealing direct answers
+- Guide users toward the first step
+- Provide logical approach insights
+- Maintain problem-solving challenge
 
-This approach not only supports deeper thinking but also helps user feel guided and supported, improving the overall learning experience without compromising problem-solving challenge.
+### Database Integration
+- **Problem Storage:** `math_problem_sessions` table stores generated problems
+- **User Submissions:** `math_problem_submissions` table tracks answers and feedback
+- **Data Validation:** Zod schema validation for AI response parsing
 
+### User Experience
+- **Clean Interface:** Card-based layout with consistent spacing
+- **Loading States:** Visual feedback during AI operations
+- **Error Handling:** Graceful error management with user-friendly messages
+- **Real-time Updates:** Instant feedback and progress tracking
 
+## 🏆 Achievement System
 
+The application includes a comprehensive achievement system with 8 unlockable badges:
+
+- 🎯 **First Problem** - Solve your first math problem
+- 🧠 **Quick Learner** - Solve 5 problems correctly
+- 🔥 **Hot Streak** - Get 3 correct answers in a row
+- 🏆 **Math Master** - Solve 10 problems total
+- 💯 **Perfect Score** - Achieve 100% accuracy on 5+ problems
+- 💡 **Hint Master** - Use hints effectively on 3+ problems
+- ⚡ **Speed Demon** - Get 5 correct answers in a row
+- 🧩 **Problem Solver** - Solve 20 problems total
+
+## 🚀 Deployment
+
+The application is deployed on Vercel with automatic deployments from the main branch. All environment variables are configured for production use.
+
+## 📊 Project Statistics
+
+- **TypeScript:** 89.6%
+- **JavaScript:** 2.3%
+- **Other:** 8.1%
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Google Gemini AI for powerful language model capabilities
+- Supabase for reliable database infrastructure
+- Next.js team for the excellent React framework
+- Vercel for seamless deployment platform
