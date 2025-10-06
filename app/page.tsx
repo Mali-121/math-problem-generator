@@ -48,6 +48,7 @@ export default function Home() {
   const [hasSubmittedWrongAnswer, setHasSubmittedWrongAnswer] = useState(false)
   const [isGeneratingHint, setIsGeneratingHint] = useState(false)
   const [isRefreshingHistory, setIsRefreshingHistory] = useState(false)
+  const [hoveredAchievement, setHoveredAchievement] = useState<string | null>(null)
   
   // navigation
   const [currentView, setCurrentView] = useState<'main' | 'history' | 'stats'>('main')
@@ -1129,9 +1130,42 @@ export default function Home() {
                     transform: score.total >= 1 ? 'scale(1.02)' : 'scale(1)',
                     boxShadow: score.total >= 1 ? '0 4px 12px rgba(34, 197, 94, 0.3)' : 'none'
                   }}
-                  title={score.total >= 1 ? 'Completed! You solved your first math problem.' : 'Solve 1 math problem to unlock this achievement.'}
+                  onMouseEnter={() => setHoveredAchievement('first-problem')}
+                  onMouseLeave={() => setHoveredAchievement(null)}
                 >
                   🎯 First Problem
+                  {hoveredAchievement === 'first-problem' && (
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '100%',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      backgroundColor: '#1f2937',
+                      color: 'white',
+                      padding: '0.5rem 0.75rem',
+                      borderRadius: '0.375rem',
+                      fontSize: '0.75rem',
+                      fontWeight: '500',
+                      whiteSpace: 'nowrap',
+                      zIndex: 1000,
+                      marginBottom: '0.5rem',
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                      border: '1px solid #374151'
+                    }}>
+                      {score.total >= 1 ? 'Completed! You solved your first math problem.' : 'Solve 1 math problem to unlock this achievement.'}
+                      <div style={{
+                        position: 'absolute',
+                        top: '100%',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: 0,
+                        height: 0,
+                        borderLeft: '4px solid transparent',
+                        borderRight: '4px solid transparent',
+                        borderTop: '4px solid #1f2937'
+                      }}></div>
+                    </div>
+                  )}
                 </div>
                 
                 {/* Quick Learner Achievement */}
@@ -1151,9 +1185,42 @@ export default function Home() {
                     transform: score.correct >= 5 ? 'scale(1.02)' : 'scale(1)',
                     boxShadow: score.correct >= 5 ? '0 4px 12px rgba(59, 130, 246, 0.3)' : 'none'
                   }}
-                  title={score.correct >= 5 ? 'Completed! You\'ve solved 5 problems correctly.' : 'Solve 5 problems correctly to unlock this achievement.'}
+                  onMouseEnter={() => setHoveredAchievement('quick-learner')}
+                  onMouseLeave={() => setHoveredAchievement(null)}
                 >
                   🧠 Quick Learner
+                  {hoveredAchievement === 'quick-learner' && (
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '100%',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      backgroundColor: '#1f2937',
+                      color: 'white',
+                      padding: '0.5rem 0.75rem',
+                      borderRadius: '0.375rem',
+                      fontSize: '0.75rem',
+                      fontWeight: '500',
+                      whiteSpace: 'nowrap',
+                      zIndex: 1000,
+                      marginBottom: '0.5rem',
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                      border: '1px solid #374151'
+                    }}>
+                      {score.correct >= 5 ? 'Completed! You\'ve solved 5 problems correctly.' : 'Solve 5 problems correctly to unlock this achievement.'}
+                      <div style={{
+                        position: 'absolute',
+                        top: '100%',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: 0,
+                        height: 0,
+                        borderLeft: '4px solid transparent',
+                        borderRight: '4px solid transparent',
+                        borderTop: '4px solid #1f2937'
+                      }}></div>
+                    </div>
+                  )}
                 </div>
                 
                 {/* Hot Streak Achievement */}
@@ -1173,9 +1240,42 @@ export default function Home() {
                     transform: score.streak >= 3 ? 'scale(1.02)' : 'scale(1)',
                     boxShadow: score.streak >= 3 ? '0 4px 12px rgba(245, 158, 11, 0.3)' : 'none'
                   }}
-                  title={score.streak >= 3 ? 'Completed! You have a streak of 3 correct answers.' : 'Get 3 correct answers in a row to unlock this achievement.'}
+                  onMouseEnter={() => setHoveredAchievement('hot-streak')}
+                  onMouseLeave={() => setHoveredAchievement(null)}
                 >
                   🔥 Hot Streak
+                  {hoveredAchievement === 'hot-streak' && (
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '100%',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      backgroundColor: '#1f2937',
+                      color: 'white',
+                      padding: '0.5rem 0.75rem',
+                      borderRadius: '0.375rem',
+                      fontSize: '0.75rem',
+                      fontWeight: '500',
+                      whiteSpace: 'nowrap',
+                      zIndex: 1000,
+                      marginBottom: '0.5rem',
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                      border: '1px solid #374151'
+                    }}>
+                      {score.streak >= 3 ? 'Completed! You have a streak of 3 correct answers.' : 'Get 3 correct answers in a row to unlock this achievement.'}
+                      <div style={{
+                        position: 'absolute',
+                        top: '100%',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: 0,
+                        height: 0,
+                        borderLeft: '4px solid transparent',
+                        borderRight: '4px solid transparent',
+                        borderTop: '4px solid #1f2937'
+                      }}></div>
+                    </div>
+                  )}
                 </div>
                 
                 {/* Math Master Achievement */}
@@ -1195,9 +1295,42 @@ export default function Home() {
                     transform: score.total >= 10 ? 'scale(1.02)' : 'scale(1)',
                     boxShadow: score.total >= 10 ? '0 4px 12px rgba(139, 92, 246, 0.3)' : 'none'
                   }}
-                  title={score.total >= 10 ? 'Completed! You\'ve solved 10 problems total.' : 'Solve 10 problems total to unlock this achievement.'}
+                  onMouseEnter={() => setHoveredAchievement('math-master')}
+                  onMouseLeave={() => setHoveredAchievement(null)}
                 >
                   🏆 Math Master
+                  {hoveredAchievement === 'math-master' && (
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '100%',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      backgroundColor: '#1f2937',
+                      color: 'white',
+                      padding: '0.5rem 0.75rem',
+                      borderRadius: '0.375rem',
+                      fontSize: '0.75rem',
+                      fontWeight: '500',
+                      whiteSpace: 'nowrap',
+                      zIndex: 1000,
+                      marginBottom: '0.5rem',
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                      border: '1px solid #374151'
+                    }}>
+                      {score.total >= 10 ? 'Completed! You\'ve solved 10 problems total.' : 'Solve 10 problems total to unlock this achievement.'}
+                      <div style={{
+                        position: 'absolute',
+                        top: '100%',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: 0,
+                        height: 0,
+                        borderLeft: '4px solid transparent',
+                        borderRight: '4px solid transparent',
+                        borderTop: '4px solid #1f2937'
+                      }}></div>
+                    </div>
+                  )}
                 </div>
                 
                 {/* Perfect Score Achievement */}
@@ -1217,9 +1350,42 @@ export default function Home() {
                     transform: score.total >= 5 && score.correct === score.total ? 'scale(1.02)' : 'scale(1)',
                     boxShadow: score.total >= 5 && score.correct === score.total ? '0 4px 12px rgba(236, 72, 153, 0.3)' : 'none'
                   }}
-                  title={score.total >= 5 && score.correct === score.total ? 'Completed! You have a perfect score!' : 'Solve 5+ problems with 100% accuracy to unlock this achievement.'}
+                  onMouseEnter={() => setHoveredAchievement('perfect-score')}
+                  onMouseLeave={() => setHoveredAchievement(null)}
                 >
                   💯 Perfect Score
+                  {hoveredAchievement === 'perfect-score' && (
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '100%',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      backgroundColor: '#1f2937',
+                      color: 'white',
+                      padding: '0.5rem 0.75rem',
+                      borderRadius: '0.375rem',
+                      fontSize: '0.75rem',
+                      fontWeight: '500',
+                      whiteSpace: 'nowrap',
+                      zIndex: 1000,
+                      marginBottom: '0.5rem',
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                      border: '1px solid #374151'
+                    }}>
+                      {score.total >= 5 && score.correct === score.total ? 'Completed! You have a perfect score!' : 'Solve 5+ problems with 100% accuracy to unlock this achievement.'}
+                      <div style={{
+                        position: 'absolute',
+                        top: '100%',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: 0,
+                        height: 0,
+                        borderLeft: '4px solid transparent',
+                        borderRight: '4px solid transparent',
+                        borderTop: '4px solid #1f2937'
+                      }}></div>
+                    </div>
+                  )}
                 </div>
                 
                 {/* Hint Master Achievement */}
@@ -1239,9 +1405,42 @@ export default function Home() {
                     transform: score.total >= 3 ? 'scale(1.02)' : 'scale(1)',
                     boxShadow: score.total >= 3 ? '0 4px 12px rgba(16, 185, 129, 0.3)' : 'none'
                   }}
-                  title={score.total >= 3 ? 'Completed! You\'ve used hints effectively.' : 'Solve 3+ problems using hints to unlock this achievement.'}
+                  onMouseEnter={() => setHoveredAchievement('hint-master')}
+                  onMouseLeave={() => setHoveredAchievement(null)}
                 >
                   💡 Hint Master
+                  {hoveredAchievement === 'hint-master' && (
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '100%',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      backgroundColor: '#1f2937',
+                      color: 'white',
+                      padding: '0.5rem 0.75rem',
+                      borderRadius: '0.375rem',
+                      fontSize: '0.75rem',
+                      fontWeight: '500',
+                      whiteSpace: 'nowrap',
+                      zIndex: 1000,
+                      marginBottom: '0.5rem',
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                      border: '1px solid #374151'
+                    }}>
+                      {score.total >= 3 ? 'Completed! You\'ve used hints effectively.' : 'Solve 3+ problems using hints to unlock this achievement.'}
+                      <div style={{
+                        position: 'absolute',
+                        top: '100%',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: 0,
+                        height: 0,
+                        borderLeft: '4px solid transparent',
+                        borderRight: '4px solid transparent',
+                        borderTop: '4px solid #1f2937'
+                      }}></div>
+                    </div>
+                  )}
                 </div>
                 
                 {/* Speed Demon Achievement */}
@@ -1261,9 +1460,42 @@ export default function Home() {
                     transform: score.streak >= 5 ? 'scale(1.02)' : 'scale(1)',
                     boxShadow: score.streak >= 5 ? '0 4px 12px rgba(239, 68, 68, 0.3)' : 'none'
                   }}
-                  title={score.streak >= 5 ? 'Completed! You have an amazing streak!' : 'Get 5 correct answers in a row to unlock this achievement.'}
+                  onMouseEnter={() => setHoveredAchievement('speed-demon')}
+                  onMouseLeave={() => setHoveredAchievement(null)}
                 >
                   ⚡ Speed Demon
+                  {hoveredAchievement === 'speed-demon' && (
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '100%',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      backgroundColor: '#1f2937',
+                      color: 'white',
+                      padding: '0.5rem 0.75rem',
+                      borderRadius: '0.375rem',
+                      fontSize: '0.75rem',
+                      fontWeight: '500',
+                      whiteSpace: 'nowrap',
+                      zIndex: 1000,
+                      marginBottom: '0.5rem',
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                      border: '1px solid #374151'
+                    }}>
+                      {score.streak >= 5 ? 'Completed! You have an amazing streak!' : 'Get 5 correct answers in a row to unlock this achievement.'}
+                      <div style={{
+                        position: 'absolute',
+                        top: '100%',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: 0,
+                        height: 0,
+                        borderLeft: '4px solid transparent',
+                        borderRight: '4px solid transparent',
+                        borderTop: '4px solid #1f2937'
+                      }}></div>
+                    </div>
+                  )}
                 </div>
                 
                 {/* Problem Solver Achievement */}
@@ -1283,9 +1515,42 @@ export default function Home() {
                     transform: score.total >= 20 ? 'scale(1.02)' : 'scale(1)',
                     boxShadow: score.total >= 20 ? '0 4px 12px rgba(168, 85, 247, 0.3)' : 'none'
                   }}
-                  title={score.total >= 20 ? 'Completed! You\'re a true problem solver!' : 'Solve 20 problems total to unlock this achievement.'}
+                  onMouseEnter={() => setHoveredAchievement('problem-solver')}
+                  onMouseLeave={() => setHoveredAchievement(null)}
                 >
                   🧩 Problem Solver
+                  {hoveredAchievement === 'problem-solver' && (
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '100%',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      backgroundColor: '#1f2937',
+                      color: 'white',
+                      padding: '0.5rem 0.75rem',
+                      borderRadius: '0.375rem',
+                      fontSize: '0.75rem',
+                      fontWeight: '500',
+                      whiteSpace: 'nowrap',
+                      zIndex: 1000,
+                      marginBottom: '0.5rem',
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                      border: '1px solid #374151'
+                    }}>
+                      {score.total >= 20 ? 'Completed! You\'re a true problem solver!' : 'Solve 20 problems total to unlock this achievement.'}
+                      <div style={{
+                        position: 'absolute',
+                        top: '100%',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: 0,
+                        height: 0,
+                        borderLeft: '4px solid transparent',
+                        borderRight: '4px solid transparent',
+                        borderTop: '4px solid #1f2937'
+                      }}></div>
+                    </div>
+                  )}
                 </div>
                 
                 {score.total === 0 && (
