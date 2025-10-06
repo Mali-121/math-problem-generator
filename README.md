@@ -35,6 +35,7 @@ Supabase Credentials (for testing)
 These are public keys (safe to share):
 
 SUPABASE_URL: https://rvbsnzhydudgcoiavwuz.supabase.co
+
 SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2YnNuemh5ZHVkZ2NvaWF2d3V6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk3MTg1NzEsImV4cCI6MjA3NTI5NDU3MX0.1k3IKzDelhuDq83SUZUifvw0xDMCF-hkTHnhpBX8tjc
 
 Additional Features (Optional)
