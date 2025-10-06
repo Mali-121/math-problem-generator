@@ -16,16 +16,71 @@ export default function Home() {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
 
   const generateProblem = async () => {
-    // TODO: Implement problem generation logic
-    // This should call your API route to generate a new problem
-    // and save it to the database
+    setIsLoading(true)
+    setFeedback('')
+    setIsCorrect(null)
+    
+    try {
+      const response = await fetch('/api/math-problem', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ action: 'generate' }),
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        setProblem({
+          problem_text: data.problem.problem_text,
+          final_answer: data.problem.final_answer
+        })
+        setSessionId(data.sessionId)
+        setUserAnswer('')
+      } else {
+        throw new Error(data.error || 'Failed to generate problem')
+      }
+    } catch (error) {
+      console.error('Error generating problem:', error)
+      setFeedback('Sorry, there was an error generating the problem. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const submitAnswer = async (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO: Implement answer submission logic
-    // This should call your API route to check the answer,
-    // save the submission, and generate feedback
+    setIsLoading(true)
+    
+    try {
+      const response = await fetch('/api/math-problem', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          action: 'submit',
+          sessionId,
+          userAnswer: parseFloat(userAnswer)
+        }),
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        setIsCorrect(data.isCorrect)
+        setFeedback(data.feedback)
+      } else {
+        throw new Error(data.error || 'Failed to submit answer')
+      }
+    } catch (error) {
+      console.error('Error submitting answer:', error)
+      setFeedback('Sorry, there was an error processing your answer. Please try again.')
+      setIsCorrect(false)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
