@@ -23,8 +23,8 @@ export async function POST(request: NextRequest) {
       return await getProblemHistory()
     } 
     else if (action === 'getHint') {
-      const { sessionId, hintIndex } = body
-      return await getHint(sessionId, hintIndex)
+      const { sessionId, hintIndex, userAnswer } = body
+      return await getHint(sessionId, hintIndex, userAnswer)
     } 
     else {
       return NextResponse.json({ error: 'Invalid action' }, { status: 400 })
@@ -317,7 +317,7 @@ async function getProblemHistory() {
   }
 }
 
-async function getHint(sessionId: string, hintIndex: number) {
+async function getHint(sessionId: string, hintIndex: number, userAnswer?: number) {
   try {
     // get the problem
     const { data: session, error: sessionError } = await supabase
@@ -330,6 +330,16 @@ async function getHint(sessionId: string, hintIndex: number) {
       return NextResponse.json({ error: 'Problem session not found' }, { status: 404 })
     }
 
+    // get the user's last wrong answer if available
+    const { data: lastSubmission } = await supabase
+      .from('math_problem_submissions')
+      .select('user_answer')
+      .eq('session_id', sessionId)
+      .eq('is_correct', false)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single()
+
     // generate hint using AI
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" })
     
@@ -339,15 +349,20 @@ async function getHint(sessionId: string, hintIndex: number) {
       "Provide a clue about the final step"
     ]
 
-    const hintPrompt = `You are a helpful math tutor. Generate a helpful hint for this math problem:
+    let hintPrompt = `You are a helpful math tutor. Generate a helpful hint for this math problem:
 
 Problem: "${session.problem_text}"
 Correct Answer: ${session.correct_answer}
 Hint Level: ${hintIndex + 1}/3
 
-${hintPrompts[hintIndex] || "Give a general hint"}
+${hintPrompts[hintIndex] || "Give a general hint"}`
 
-Make the hint helpful but don't give away the answer. Keep it encouraging and age-appropriate for Primary 5 students (10-11 years old).`
+    // Add context about wrong answer if available
+    if (lastSubmission?.user_answer !== undefined) {
+      hintPrompt += `\n\nIMPORTANT: The student previously answered ${lastSubmission.user_answer}, which was incorrect. In your hint, directly reference their wrong answer and help them understand where they might have gone wrong. For example, say something like "I see you answered ${lastSubmission.user_answer}, but..." and then guide them toward the correct approach without giving away the answer.`
+    }
+
+    hintPrompt += `\n\nMake the hint helpful but don't give away the answer. Keep it encouraging and age-appropriate for Primary 5 students (10-11 years old).`
 
     const result = await model.generateContent(hintPrompt)
     const response = await result.response

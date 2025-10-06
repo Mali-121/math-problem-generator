@@ -1,136 +1,84 @@
-# Math Problem Generator - Developer Assessment Starter Kit
+Math Problem Generator
 
-## Overview
+An AI-powered learning platform that generates Primary 5 level math word problems and gives personalized feedback using Google Gemini AI. Built with Next.js 14, TypeScript, Tailwind CSS, and Supabase.
 
-This is a starter kit for building an AI-powered math problem generator application. The goal is to create a standalone prototype that uses AI to generate math word problems suitable for Primary 5 students, saves the problems and user submissions to a database, and provides personalized feedback.
+Live Demo
 
-## Tech Stack
+https://math-problem-generator-ten.vercel.app
 
-- **Frontend Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Database**: Supabase
-- **AI Integration**: Google Generative AI (Gemini 2.5 Flash)
+Technologies Used
 
-## Setup Instructions
+Next.js 14 (App Router)
 
-### 1. Clone the Repository
+TypeScript
 
-```bash
-git clone <your-repo-url>
+Tailwind CSS
+
+Supabase (Database & API)
+
+Google Generative AI (Gemini 2.5-flash)
+
+How to Run Locally
+git clone https://github.com/Mali-121/math-problem-generator.git
 cd math-problem-generator
-```
-
-### 2. Create a Supabase Project
-
-1. Go to [https://supabase.com](https://supabase.com) and create a free account
-2. Create a new project
-3. Go to Settings → API to find your:
-   - Project URL (starts with `https://`)
-   - Anon/Public Key
-
-### 3. Set Up Database Tables
-
-1. In your Supabase dashboard, go to SQL Editor
-2. Copy and paste the contents of `database.sql`
-3. Click "Run" to create the tables and policies
-
-### 4. Get Google API Key
-
-1. Go to [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. Create a new API key for Gemini
-
-### 5. Configure Environment Variables
-
-1. Create `.env.local` file:
-   ```bash
-   touch .env.local
-   ```
-2. Edit `.env.local` and add your actual keys:
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=your_actual_supabase_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_actual_supabase_anon_key
-   GOOGLE_API_KEY=your_actual_google_api_key
-   ```
-
-### 6. Install Dependencies
-
-```bash
+cp .env.local
 npm install
-```
-
-### 7. Run the Development Server
-
-```bash
 npm run dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Environment Variables
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+GOOGLE_API_KEY=your_google_gemini_api_key
 
-## Implementation Status
+Supabase Credentials (for testing)
 
-### ✅ Completed Features
+These are public keys (safe to share):
 
-- **AI Problem Generation**: Uses Gemini 2.5 Flash to generate Primary 5 appropriate math problems
-- **Database Integration**: Problems and submissions saved to Supabase
-- **Answer Validation**: Automatic checking of user answers
-- **Personalized Feedback**: AI-generated feedback based on student responses
-- **Responsive UI**: Clean, mobile-friendly interface
-- **Error Handling**: Graceful error handling for API failures
-- **Loading States**: Visual feedback during API calls
+SUPABASE_URL: https://rvbsnzhydudgcoiavwuz.supabase.co
+SUPABASE_ANON_KEY:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2YnNuemh5ZHVkZ2NvaWF2d3V6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk3MTg1NzEsImV4cCI6MjA3NTI5NDU3MX0.1k3IKzDelhuDq83SUZUifvw0xDMCF-hkTHnhpBX8tjc
 
-### 3. Requirements Checklist
+Additional Features (Optional)
+ Difficulty levels (Easy/Medium/Hard) - Implemented
+ Problem history view - Implemented
+ Score tracking - Implemented
+ Different problem types (addition, subtraction, multiplication, division) - Implemented
+ Hints system - Implemented
+ Step-by-step solution explanations - Implemented
 
-- [x] AI generates appropriate Primary 5 level math problems
-- [x] Problems and answers are saved to Supabase
-- [x] User submissions are saved with feedback
-- [x] AI generates helpful, personalized feedback
-- [x] UI is clean and mobile-responsive
-- [x] Error handling for API failures
-- [x] Loading states during API calls
+My Implementation Notes:
 
-## Deployment
+Ai-powered Problem Generator: 
+Integrated with Gemini (2.5-flash) to generate Primary 5-level math work problems, reuturning a structured JSON with problem_text and final_answer and more. 
 
-### Deploy to Vercel
+Personalised Feedback via Ai:
+Implmeneted a sceondary call to generate a short ecnourageing and constructive feedback based on the students answer and the original problem.
 
-1. Push your code to GitHub
-2. Go to [Vercel](https://vercel.com) and import your repository
-3. Add your environment variables in Vercel's project settings
-4. Deploy!
+Superbase integration: 
+Math problem are stored in math_problem_sessions
+Users answers and feeback is stored in math_problem_submissions.
 
-## Assessment Submission
+Validation with Zod: 
+Added strict zod schema validation to parse and safely handle AI responses before saving them to the database.
 
-When submitting your assessment, provide:
+Clean, Responsive UI:
+Built a mobile-friendly interface using Tailwind CSS with a card-based layout, consistent spacing, and intuitive input/submit flow.
 
-1. **GitHub Repository URL**: Make sure it's public
-2. **Live Demo URL**: Your Vercel deployment
-3. **Supabase Credentials**: Add these to your README for testing:
-   ```
-   SUPABASE_URL: [Your Supabase Project URL]
-   SUPABASE_ANON_KEY: [Your Supabase Anon Key]
-   ```
+Error Handling & Loading States: 
+Included proper try/catch error handling and loading indicators during API calls to improve user experience and debug-ability.
 
-## Implementation Notes
+Deployed on Vercel: 
+Pushed to GitHub and deployed to Vercel with all required environment variables for a smooth end-to-end demo.
 
-### My Implementation:
+Feature i am perticularly proud of 
+One feature I’m especially proud of is the two-stage AI-driven hint system I designed to enhance the learning experience. I carefully tailored the AI prompts to avoid giving away direct answers. Instead, the hints are crafted to gently nudge the user toward the first step of solving the problem, while also offering insight into how to approach the solution logically all without spoiling it.
 
-- **Gemini 2.5 Flash Integration**: Used the latest Gemini model for both problem generation and feedback
-- **Robust Error Handling**: Implemented fallback problems and comprehensive error handling
-- **TypeScript Configuration**: Proper path mapping and type safety throughout
-- **Database Design**: Clean schema with proper relationships and indexes
-- **User Experience**: Intuitive interface with clear feedback and loading states
+What makes this system unique is its adaptive nature:
 
-## Additional Features (Optional)
+When a math problem is first generated, the AI also creates three general-purpose hints related to that problem.
 
-If you have time, consider adding:
+If the user submits an incorrect answer and then clicks the “Hint” button, the system dynamically generates a more personalized, empathetic hint based on their specific mistake.
 
-- [ ] Difficulty levels (Easy/Medium/Hard)
-- [ ] Problem history view
-- [ ] Score tracking
-- [ ] Different problem types (addition, subtraction, multiplication, division)
-- [ ] Hints system
-- [ ] Step-by-step solution explanations
+This approach not only supports deeper thinking but also helps user feel guided and supported, improving the overall learning experience without compromising problem-solving challenge.
 
----
 
-Good luck with your assessment! 🎯
+
