@@ -35,7 +35,7 @@ Supabase Credentials (for testing)
 These are public keys (safe to share):
 
 SUPABASE_URL: https://rvbsnzhydudgcoiavwuz.supabase.co
-SUPABASE_ANON_KEY:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2YnNuemh5ZHVkZ2NvaWF2d3V6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk3MTg1NzEsImV4cCI6MjA3NTI5NDU3MX0.1k3IKzDelhuDq83SUZUifvw0xDMCF-hkTHnhpBX8tjc
+SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2YnNuemh5ZHVkZ2NvaWF2d3V6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk3MTg1NzEsImV4cCI6MjA3NTI5NDU3MX0.1k3IKzDelhuDq83SUZUifvw0xDMCF-hkTHnhpBX8tjc
 
 Additional Features (Optional)
  Difficulty levels (Easy/Medium/Hard) - Implemented
@@ -69,7 +69,7 @@ Included proper try/catch error handling and loading indicators during API calls
 Deployed on Vercel: 
 Pushed to GitHub and deployed to Vercel with all required environment variables for a smooth end-to-end demo.
 
-Feature i am perticularly proud of 
+Feature i am perticularly proud of:
 One feature I’m especially proud of is the two-stage AI-driven hint system I designed to enhance the learning experience. I carefully tailored the AI prompts to avoid giving away direct answers. Instead, the hints are crafted to gently nudge the user toward the first step of solving the problem, while also offering insight into how to approach the solution logically all without spoiling it.
 
 What makes this system unique is its adaptive nature:
