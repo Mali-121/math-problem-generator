@@ -73,8 +73,7 @@ For testing purposes, you can use these public Supabase credentials:
 
 ## ✨ Features
 
-### Core Features
-- ✅ **AI Problem Generation** - Dynamic math word problems using Gemini AI
+### New Features Features
 - ✅ **Difficulty Levels** - Easy, Medium, and Hard problem variations
 - ✅ **Problem Types** - Addition, subtraction, multiplication, division, and mixed operations
 - ✅ **Intelligent Hint System** - Two-stage AI-powered hints (pre-generated + dynamic)
@@ -133,27 +132,4 @@ The application includes a comprehensive achievement system with 8 unlockable ba
 
 The application is deployed on Vercel with automatic deployments from the main branch. All environment variables are configured for production use.
 
-## 📊 Project Statistics
 
-- **TypeScript:** 89.6%
-- **JavaScript:** 2.3%
-- **Other:** 8.1%
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Google Gemini AI for powerful language model capabilities
-- Supabase for reliable database infrastructure
-- Next.js team for the excellent React framework
-- Vercel for seamless deployment platform
