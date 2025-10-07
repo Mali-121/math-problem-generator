@@ -222,98 +222,36 @@ export default function Home() {
   }
 
   return (
-    <div style={{ 
-      minHeight: '100vh', 
-      backgroundColor: '#ffffff', 
-      color: '#000000',
-      fontFamily: 'system-ui, -apple-system, sans-serif' // system fonts
-    }}>
+    <div className="main-wrapper">
       {/* Header */}
-      <header style={{ 
-        backgroundColor: '#f8fafc', 
-        borderBottom: '1px solid #e2e8f0',
-        padding: '1rem 0'
-      }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 1rem' }}>
-          <h1 style={{ 
-            fontSize: '1.5rem', 
-            fontWeight: 'bold', 
-            margin: 0,
-            color: '#000000'
-          }}>
+      <header className="main-header">
+        <div className="header-content">
+          <h1 className="header-title">
           Math Problem Generator
         </h1>
         </div>
       </header>
 
-      <main style={{ maxWidth: '1000px', margin: '0 auto', padding: '1rem 0.75rem' }}>
+      <main className="main-container">
         {/* Navigation Tabs */}
-        <div style={{ 
-          display: 'flex', 
-          gap: '0.25rem', 
-          marginBottom: '1.5rem',
-          justifyContent: 'center',
-          flexWrap: 'wrap'
-        }}>
+        <div className="nav-tabs-container">
           <button
             onClick={() => setCurrentView('main')}
-            style={{
-              padding: '0.5rem 1rem',
-              borderRadius: '0.5rem',
-              border: 'none',
-              background: currentView === 'main' ? 'linear-gradient(to right, #10b981, #059669)' : '#e5e7eb',
-              color: currentView === 'main' ? 'white' : '#000000',
-              fontSize: '0.75rem',
-              fontWeight: '600',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.25rem',
-              transition: 'all 0.2s ease',
-              minHeight: '44px' // Better touch target
-            }}
+            className={`nav-tab ${currentView === 'main' ? 'active' : ''}`}
           >
             <span>⚡</span>
             Practice
           </button>
           <button
             onClick={() => setCurrentView('history')}
-            style={{
-              padding: '0.5rem 1rem',
-              borderRadius: '0.5rem',
-              border: 'none',
-              background: currentView === 'history' ? 'linear-gradient(to right, #10b981, #059669)' : '#e5e7eb',
-              color: currentView === 'history' ? 'white' : '#000000',
-              fontSize: '0.75rem',
-              fontWeight: '600',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.25rem',
-              transition: 'all 0.2s ease',
-              minHeight: '44px'
-            }}
+            className={`nav-tab ${currentView === 'history' ? 'active' : ''}`}
           >
             <span>📖</span>
             History
           </button>
           <button
             onClick={() => setCurrentView('stats')}
-            style={{
-              padding: '0.5rem 1rem',
-              borderRadius: '0.5rem',
-              border: 'none',
-              background: currentView === 'stats' ? 'linear-gradient(to right, #10b981, #059669)' : '#e5e7eb',
-              color: currentView === 'stats' ? 'white' : '#000000',
-              fontSize: '0.75rem',
-              fontWeight: '600',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.25rem',
-              transition: 'all 0.2s ease',
-              minHeight: '44px'
-            }}
+            className={`nav-tab ${currentView === 'stats' ? 'active' : ''}`}
           >
             <span>📈</span>
             Stats
@@ -321,53 +259,30 @@ export default function Home() {
         </div>
 
         {/* Stats Cards */}
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', 
-          gap: '0.75rem', 
-          marginBottom: '1.5rem' 
-        }}>
-          <div style={{ 
-            backgroundColor: '#f8fafc', 
-            borderRadius: '0.75rem', 
-            padding: '1rem', 
-            border: '1px solid #e2e8f0',
-            textAlign: 'center'
-          }}>
-            <div style={{ fontSize: '1.75rem', fontWeight: 'bold', color: '#3b82f6', marginBottom: '0.25rem' }}>
+        <div className="stats-cards-container">
+          <div className="stats-card">
+            <div className="stats-number total">
               {score.total}
             </div>
-            <div style={{ fontSize: '0.75rem', color: '#000000', fontWeight: '600' }}>
+            <div className="stats-label">
               Total Problems
             </div>
           </div>
           
-          <div style={{ 
-            backgroundColor: '#f8fafc', 
-            borderRadius: '0.75rem', 
-            padding: '1rem', 
-            border: '1px solid #e2e8f0',
-            textAlign: 'center'
-          }}>
-            <div style={{ fontSize: '1.75rem', fontWeight: 'bold', color: '#10b981', marginBottom: '0.25rem' }}>
+          <div className="stats-card">
+            <div className="stats-number correct">
               {score.correct}
             </div>
-            <div style={{ fontSize: '0.75rem', color: '#000000', fontWeight: '600' }}>
+            <div className="stats-label">
               Correct Answers
             </div>
           </div>
           
-          <div style={{ 
-            backgroundColor: '#f8fafc', 
-            borderRadius: '0.75rem', 
-            padding: '1rem', 
-            border: '1px solid #e2e8f0',
-            textAlign: 'center'
-          }}>
-            <div style={{ fontSize: '1.75rem', fontWeight: 'bold', color: '#f59e0b', marginBottom: '0.25rem' }}>
+          <div className="stats-card">
+            <div className="stats-number streak">
               {score.streak}
             </div>
-            <div style={{ fontSize: '0.75rem', color: '#000000', fontWeight: '600' }}>
+            <div className="stats-label">
               Current Streak
             </div>
           </div>
@@ -378,56 +293,23 @@ export default function Home() {
           <>
 
         {/* Settings Card */}
-        <div style={{ 
-          backgroundColor: '#f8fafc', 
-          borderRadius: '0.75rem', 
-          border: '1px solid #e2e8f0', 
-          padding: '1rem',
-          marginBottom: '1.5rem'
-        }}>
-          <h3 style={{ 
-            fontSize: '1.125rem', 
-            fontWeight: '600', 
-            color: '#000000', 
-            margin: '0 0 1rem 0',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem'
-          }}>
+        <div className="settings-card">
+          <h3 className="settings-title">
             ⚙️ Problem Settings {/* TODO: maybe add more settings later */}
           </h3>
           
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+          <div className="settings-grid">
             {/* Difficulty Selection */}
             <div>
-              <label style={{ 
-                display: 'block', 
-                fontSize: '0.875rem', 
-                fontWeight: '600', 
-                color: '#000000', 
-                marginBottom: '0.75rem' 
-              }}>
+              <label className="settings-label">
                 Difficulty Level {/* easy, medium, hard */}
               </label>
-              <div style={{ display: 'flex', gap: '0.25rem' }}>
+              <div className="difficulty-buttons-container">
                 {(['easy', 'medium', 'hard'] as const).map((level) => (
                   <button
                     key={level}
                     onClick={() => setSelectedDifficulty(level)}
-                    style={{
-                      flex: 1,
-                      padding: '0.5rem 0.75rem',
-                      borderRadius: '0.5rem',
-                      border: 'none',
-                      background: selectedDifficulty === level ? 'linear-gradient(to right, #3b82f6, #2563eb)' : '#e5e7eb',
-                      color: selectedDifficulty === level ? 'white' : '#000000',
-                      fontSize: '0.75rem',
-                      fontWeight: '600',
-                      cursor: 'pointer',
-                      textTransform: 'capitalize',
-                      transition: 'all 0.2s ease',
-                      minHeight: '44px'
-                    }}
+                    className={`difficulty-btn ${selectedDifficulty === level ? 'selected' : ''}`}
                   >
                     {level}
                   </button>
@@ -437,36 +319,13 @@ export default function Home() {
 
             {/* Problem Type Selection */}
             <div>
-              <label style={{ 
-                display: 'block', 
-                fontSize: '0.875rem', 
-                fontWeight: '600', 
-                color: '#000000', 
-                marginBottom: '0.75rem' 
-              }}>
+              <label className="settings-label">
                 Problem Type {/* what kind of math */}
               </label>
               <select
                 value={selectedProblemType}
                 onChange={(e) => setSelectedProblemType(e.target.value as any)}
-                style={{
-                  width: '100%',
-                  padding: '0.5rem 2rem 0.5rem 0.75rem', // Add right padding for arrow space
-                  backgroundColor: '#ffffff',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '0.5rem',
-                  color: '#000000',
-                  fontSize: '0.75rem',
-                  fontWeight: '600',
-                  outline: 'none',
-                  minHeight: '44px',
-                  appearance: 'none', // Remove default arrow
-                  backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23000000' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
-                  backgroundPosition: 'right 0.5rem center',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundSize: '1rem 1rem',
-                  cursor: 'pointer'
-                }}
+                className="problem-type-select"
               >
                 <option value="mixed">Mixed Operations</option>
                 <option value="addition">Addition</option>
@@ -479,40 +338,15 @@ export default function Home() {
         </div>
 
         {/* Generate Button */}
-        <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+        <div className="generate-btn-container">
           <button
             onClick={generateProblem}
             disabled={isGenerating}
-            style={{
-              background: isGenerating ? 'linear-gradient(to right, #9ca3af, #6b7280)' : 'linear-gradient(to right, #10b981, #059669)',
-              color: 'white',
-              fontWeight: '600',
-              padding: '0.875rem 1.5rem',
-              borderRadius: '0.75rem',
-              border: 'none',
-              cursor: isGenerating ? 'not-allowed' : 'pointer',
-              fontSize: '0.875rem',
-              width: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.5rem',
-              margin: '0 auto',
-              boxShadow: '0 4px 14px 0 rgba(16, 185, 129, 0.3)',
-              transition: 'all 0.2s ease',
-              minHeight: '48px'
-            }}
+            className="generate-btn"
           >
             {isGenerating ? (
               <>
-                <div style={{ 
-                  width: '1rem', 
-                  height: '1rem', 
-                  border: '2px solid white', 
-                  borderTop: '2px solid transparent', 
-                  borderRadius: '50%', 
-                  animation: 'spin 1s linear infinite' 
-                }}></div>
+                <div className="loading-spinner"></div>
                 Generating... {/* loading state */}
               </>
             ) : (
@@ -525,125 +359,51 @@ export default function Home() {
 
             {/* Problem Display */}
         {problem && (
-              <div style={{ 
-                backgroundColor: '#f9fafb', 
-                borderRadius: '0.75rem', 
-                border: '1px solid #e2e8f0', 
-                padding: '1rem',
-                marginBottom: '1.5rem',
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-              }}>
+              <div className="problem-card">
             {/* Problem Header */}
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'flex-start', 
-              justifyContent: 'space-between',
-              marginBottom: '1rem',
-              flexDirection: 'column',
-              gap: '0.75rem'
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <div style={{ 
-                  width: '2rem', 
-                  height: '2rem', 
-                  background: 'linear-gradient(to right, #10b981, #059669)', 
-                  borderRadius: '0.5rem', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center' 
-                }}>
-                  <span style={{ fontSize: '1rem' }}>📝</span>
+            <div className="problem-header">
+              <div className="problem-header-content">
+                <div className="problem-header-icon">
+                  <span>📝</span>
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '1rem', fontWeight: '600', color: '#1f2937', margin: 0 }}>
+                  <h3 className="problem-title">
                     Your Math Problem
                   </h3>
-                  <p style={{ color: '#000000', fontSize: '0.75rem', margin: 0 }}>
+                  <p className="problem-subtitle">
                     Solve this step by step
                   </p>
                 </div>
               </div>
               
               {/* Problem Tags */}
-              <div style={{ display: 'flex', gap: '0.5rem', alignSelf: 'flex-start' }}>
-                <span style={{ 
-                  backgroundColor: problem.difficulty === 'easy' ? 'rgba(34, 197, 94, 0.2)' : problem.difficulty === 'medium' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(239, 68, 68, 0.2)',
-                  color: problem.difficulty === 'easy' ? '#22c55e' : problem.difficulty === 'medium' ? '#f59e0b' : '#ef4444',
-                  padding: '0.375rem 0.75rem',
-                  borderRadius: '1rem',
-                  fontSize: '0.75rem',
-                  fontWeight: '600',
-                  textTransform: 'capitalize',
-                  border: `1px solid ${problem.difficulty === 'easy' ? '#22c55e' : problem.difficulty === 'medium' ? '#f59e0b' : '#ef4444'}`
-                }}>
+              <div className="problem-tags-container">
+                <span className={`problem-tag ${problem.difficulty}`}>
                   {problem.difficulty}
                 </span>
-                <span style={{ 
-                  backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                  color: '#3b82f6',
-                  padding: '0.375rem 0.75rem',
-                  borderRadius: '1rem',
-                  fontSize: '0.75rem',
-                  fontWeight: '600',
-                  textTransform: 'capitalize',
-                  border: '1px solid #3b82f6'
-                }}>
+                <span className={`problem-tag ${problem.problem_type}`}>
                   {problem.problem_type}
                 </span>
               </div>
             </div>
             
             {/* Problem Text */}
-            <div style={{ 
-              backgroundColor: '#ffffff', 
-              borderRadius: '0.5rem', 
-              padding: '1.5rem', 
-              marginBottom: '1rem',
-              border: '1px solid #d1d5db' // subtle border
-            }}>
-              <p style={{ 
-                fontSize: '1.125rem', 
-                color: '#000000', 
-                lineHeight: '1.6', 
-                margin: 0
-              }}>
+            <div className="problem-text-card">
+              <p className="problem-text">
               {problem.problem_text}
             </p>
             </div>
             
             {/* Action Buttons */}
-            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+            <div className="action-buttons-container">
               <button
                 onClick={getHint}
                 disabled={!problem?.hints || currentHint >= (problem?.hints?.length || 0) || isGeneratingHint || isCorrect === true}
-                style={{
-                  padding: '0.5rem 1rem',
-                  borderRadius: '0.5rem',
-                  border: 'none',
-                  background: (!problem?.hints || currentHint >= (problem?.hints?.length || 0) || isGeneratingHint || isCorrect === true) ? 'linear-gradient(to right, #9ca3af, #6b7280)' : 'linear-gradient(to right, #f59e0b, #d97706)',
-                  color: 'white',
-                  fontSize: '0.875rem',
-                  fontWeight: '600',
-                  cursor: (!problem?.hints || currentHint >= (problem?.hints?.length || 0) || isGeneratingHint || isCorrect === true) ? 'not-allowed' : 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.25rem',
-                  boxShadow: (!problem?.hints || currentHint >= (problem?.hints?.length || 0) || isGeneratingHint || isCorrect === true) ? 'none' : '0 2px 4px rgba(245, 158, 11, 0.3)',
-                  transition: 'all 0.2s ease',
-                  minHeight: '44px',
-                  flex: '1 1 auto'
-                }}
+                className="action-btn hint-btn"
               >
                 {isGeneratingHint ? (
                   <>
-                    <div style={{ 
-                      width: '1rem', 
-                      height: '1rem', 
-                      border: '2px solid white', 
-                      borderTop: '2px solid transparent', 
-                      borderRadius: '50%', 
-                      animation: 'spin 1s linear infinite' 
-                    }}></div>
+                    <div className="loading-spinner"></div>
                     Generating AI Hint...
                   </>
                 ) : (
@@ -656,23 +416,7 @@ export default function Home() {
               
               <button
                 onClick={() => setShowSteps(!showSteps)}
-                style={{
-                  padding: '0.5rem 1rem',
-                  borderRadius: '0.5rem',
-                  border: 'none',
-                  background: showSteps ? 'linear-gradient(to right, #3b82f6, #2563eb)' : 'linear-gradient(to right, #9ca3af, #6b7280)',
-                  color: 'white',
-                  fontSize: '0.875rem',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.25rem',
-                  boxShadow: showSteps ? '0 2px 4px rgba(59, 130, 246, 0.3)' : 'none',
-                  transition: 'all 0.2s ease',
-                  minHeight: '44px',
-                  flex: '1 1 auto'
-                }}
+                className={`action-btn steps-btn ${!showSteps ? 'inactive' : ''}`}
               >
                 <span>{showSteps ? '👁️' : '🔍'}</span>
                 {showSteps ? 'Hide Steps' : 'Show Steps'}
@@ -681,19 +425,13 @@ export default function Home() {
             
             {/* Hints Display */}
             {hints.length > 0 && (
-              <div style={{ marginBottom: '1rem' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <div className="hints-container">
+                <div className="hints-list">
                   {hints.map((hint, index) => (
-                    <div key={index} style={{
-                      backgroundColor: '#ffffff',
-                      borderRadius: '0.375rem',
-                      padding: '0.75rem',
-                      border: '1px solid #e2e8f0',
-                      fontSize: '0.875rem',
-                      color: '#000000',
-                      lineHeight: '1.4'
-                    }}>
-                      <span style={{ fontWeight: '600', color: '#f59e0b' }}>Hint {index + 1}:</span> {hint}
+                    <div key={index} className="hint-card">
+                      <p className="hint-text">
+                        💡 {hint}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -702,32 +440,15 @@ export default function Home() {
             
             {/* Step-by-Step Solution */}
             {showSteps && problem.steps && problem.steps.length > 0 && (
-              <div style={{ marginBottom: '1rem' }}>
-                <div style={{ backgroundColor: '#ffffff', borderRadius: '0.375rem', padding: '1rem', border: '1px solid #d1d5db' }}>
+              <div className="steps-container">
+                <div className="steps-card">
                   {problem.steps.map((step, index) => (
-                    <div key={index} style={{ marginBottom: index < problem.steps!.length - 1 ? '0.75rem' : 0 }}>
-                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
-                        <div style={{ 
-                          width: '1.5rem', 
-                          height: '1.5rem', 
-                          backgroundColor: '#3b82f6', 
-                          borderRadius: '50%', 
-                          display: 'flex', 
-                          alignItems: 'center', 
-                          justifyContent: 'center',
-                          fontSize: '0.75rem',
-                          fontWeight: '600',
-                          color: 'white',
-                          flexShrink: 0
-                        }}>
+                    <div key={index} className="step-item">
+                      <div className="step-content">
+                        <div className="step-number">
                           {index + 1}
                         </div>
-                        <p style={{ 
-                          fontSize: '0.875rem', 
-                          color: '#000000', 
-                          lineHeight: '1.5', 
-                          margin: 0 
-                        }}>
+                        <p className="step-text">
                           {step}
                         </p>
                       </div>
@@ -738,7 +459,7 @@ export default function Home() {
             )}
             
             {/* Answer Input */}
-            <div style={{ marginBottom: '1rem' }}>
+            <div className="answer-input-container">
                 <input
                   type="text"
                   value={userAnswer}
@@ -750,52 +471,30 @@ export default function Home() {
                     }
                   }}
                 placeholder="Enter your answer..."
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  backgroundColor: '#ffffff',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '0.375rem',
-                  color: '#000000',
-                  fontSize: '1rem',
-                  outline: 'none',
-                  boxSizing: 'border-box' // Include padding and border in width calculation
-                }}
+                className="answer-input"
                 />
               </div>
+
+            {/* Feedback Display - Above submit button */}
+            {feedback && (
+              <div className={`feedback-container ${isCorrect ? 'correct' : 'incorrect'}`}>
+                <div className={`feedback-card ${isCorrect ? 'correct' : 'incorrect'}`}>
+                  <p className={`feedback-text ${isCorrect ? 'correct' : 'incorrect'}`}>
+                    {isCorrect ? '🎉' : '❌'} {feedback}
+                  </p>
+                </div>
+              </div>
+            )}
               
             {/* Submit Button */}
               <button
               onClick={submitAnswer}
                 disabled={!userAnswer || isSubmitting || (isCorrect === true)}
-              style={{
-                width: '100%',
-                background: (!userAnswer || isSubmitting || (isCorrect === true)) ? 'linear-gradient(to right, #9ca3af, #6b7280)' : 'linear-gradient(to right, #10b981, #059669)',
-                color: 'white',
-                fontWeight: '600',
-                padding: '1rem 1.5rem',
-                borderRadius: '0.75rem',
-                border: 'none',
-                cursor: (!userAnswer || isSubmitting || (isCorrect === true)) ? 'not-allowed' : 'pointer',
-                fontSize: '1rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '0.5rem',
-                boxShadow: (!userAnswer || isSubmitting || (isCorrect === true)) ? 'none' : '0 4px 14px 0 rgba(16, 185, 129, 0.3)',
-                transition: 'all 0.2s ease'
-              }}
+              className="submit-btn"
             >
               {isSubmitting ? (
                 <>
-                  <div style={{ 
-                    width: '1rem', 
-                    height: '1rem', 
-                    border: '2px solid white', 
-                    borderTop: '2px solid transparent', 
-                    borderRadius: '50%', 
-                    animation: 'spin 1s linear infinite' 
-                  }}></div>
+                  <div className="loading-spinner"></div>
                   Checking Answer... {/* processing */}
                 </>
               ) : (
@@ -807,207 +506,66 @@ export default function Home() {
               </button>
           </div>
         )}
-
-        {/* Feedback Display */}
-        {feedback && (
-          <div style={{ 
-            backgroundColor: '#f8fafc', 
-            borderRadius: '0.75rem', 
-            border: `2px solid ${isCorrect ? '#10b981' : '#ef4444'}`, 
-            padding: '1.5rem',
-            marginBottom: '1rem',
-            boxShadow: `0 4px 6px -1px ${isCorrect ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)'}` // conditional shadow
-          }}>
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '0.75rem', 
-              marginBottom: '1rem' 
-            }}>
-              <div style={{
-                width: '2.5rem',
-                height: '2.5rem',
-                backgroundColor: isCorrect ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                border: `2px solid ${isCorrect ? '#10b981' : '#ef4444'}`
-              }}>
-                <span style={{ fontSize: '1.25rem' }}>
-                  {isCorrect ? '✅' : '❌'}
-                </span>
-              </div>
-              <div>
-                <h4 style={{ 
-                  fontSize: '1.125rem',
-                  fontWeight: '600', 
-                  color: isCorrect ? '#10b981' : '#ef4444',
-                  margin: 0
-                }}>
-                  {isCorrect ? 'Excellent Work!' : 'Not Quite Right'}
-                </h4>
-                <p style={{ 
-                  fontSize: '0.875rem',
-                  color: '#000000', 
-                  margin: 0 
-                }}>
-                  {isCorrect ? 'You got it right!' : 'Let\'s try again'}
-                </p>
-              </div>
-            </div>
-            <div style={{
-              backgroundColor: '#ffffff',
-              borderRadius: '0.5rem',
-              padding: '1rem',
-              border: '1px solid #d1d5db' // inner border
-            }}>
-              <p style={{ 
-                color: '#000000', 
-                margin: 0, 
-                lineHeight: '1.6',
-                fontSize: '0.875rem'
-              }}>
-                {feedback}
-              </p>
-            </div>
-          </div>
-        )}
           </>
         )}
 
         {/* History View */}
         {currentView === 'history' && (
           <div>
-            <div style={{ 
-              backgroundColor: '#f9fafb', 
-              borderRadius: '0.75rem', 
-              border: '1px solid #e2e8f0', 
-              padding: '1.5rem',
-              marginBottom: '1.5rem'
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <div style={{ 
-                  width: '2.5rem', 
-                  height: '2.5rem', 
-                  background: 'linear-gradient(to right, #8b5cf6, #3b82f6)', 
-                  borderRadius: '0.5rem', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center' 
-                }}>
-                  <span style={{ fontSize: '1.25rem' }}>📚</span>
+            {/* History Header */}
+            <div className="history-header-card">
+              <div className="history-header-content">
+                <div className="history-header-icon">
+                  <span>📚</span>
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: '600', color: '#000000', margin: 0 }}>
+                  <h3 className="history-header-title">
                     Problem History
                   </h3>
-                  <p style={{ color: '#000000', fontSize: '0.875rem', margin: 0 }}>
+                  <p className="history-header-subtitle">
                     Your recent problem attempts
                   </p>
                 </div>
               </div>
             </div>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {/* History Items */}
+            <div className="history-items-container">
               {problemHistory.map((item) => (
-                <div key={item.id} style={{ 
-                  backgroundColor: '#f9fafb', 
-                  borderRadius: '0.75rem', 
-                  border: '1px solid #e2e8f0', 
-                  padding: '1.5rem' 
-                }}>
-                  <div style={{ marginBottom: '1rem' }}>
-                    <p style={{ 
-                      fontSize: '1rem', 
-                      color: '#000000', 
-                      lineHeight: '1.6', 
-                      margin: '0 0 0.75rem 0' 
-                    }}>
+                <div key={item.id} className="history-item-card">
+                  <div className="history-problem-text">
+                    <p className="history-problem-content">
                       {item.problem_text}
                     </p>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                      <span style={{ 
-                        backgroundColor: item.difficulty === 'easy' ? 'rgba(34, 197, 94, 0.2)' : item.difficulty === 'medium' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(239, 68, 68, 0.2)',
-                        color: item.difficulty === 'easy' ? '#22c55e' : item.difficulty === 'medium' ? '#f59e0b' : '#ef4444',
-                        padding: '0.25rem 0.75rem',
-                        borderRadius: '1rem',
-                        fontSize: '0.75rem',
-                        fontWeight: '600',
-                        textTransform: 'capitalize'
-                      }}>
+                    <div className="history-item-tags">
+                      <span className={`problem-tag ${item.difficulty}`}>
                         {item.difficulty}
                       </span>
-                      <span style={{ 
-                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                        color: '#3b82f6',
-                        padding: '0.25rem 0.75rem',
-                        borderRadius: '1rem',
-                        fontSize: '0.75rem',
-                        fontWeight: '600',
-                        textTransform: 'capitalize'
-                      }}>
+                      <span className={`problem-tag ${item.problem_type}`}>
                         {item.problem_type}
                       </span>
                     </div>
                   </div>
                   
-                  <div style={{ 
-                    display: 'flex', 
-                    justifyContent: 'space-between', 
-                    alignItems: 'center' 
-                  }}>
-                    <div style={{ 
-                      display: 'flex', 
-                      gap: '1rem', 
-                      fontSize: '0.875rem', 
-                      color: '#000000' 
-                    }}>
-                      <span>Your answer: <strong style={{ color: '#000000' }}>{item.user_answer}</strong></span>
-                      <span>Correct: <strong style={{ color: '#000000' }}>{item.correct_answer}</strong></span>
-                      <span>Hints used: <strong style={{ color: '#f59e0b' }}>{item.hints_used}/{item.total_hints}</strong></span>
+                  <div className="history-answers-container">
+                    <div className="history-answers-info">
+                      <span>Your answer: <strong className="history-answer-bold">{item.user_answer}</strong></span>
+                      <span>Correct: <strong className="history-answer-bold">{item.correct_answer}</strong></span>
+                      <span>Hints used: <strong className="history-hints-bold">{item.hints_used}/{item.total_hints}</strong></span>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      {item.is_correct ? (
-                        <span style={{ 
-                          color: '#22c55e', 
-                          fontSize: '0.875rem', 
-                          fontWeight: '600',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.25rem'
-                        }}>
-                          ✅ Correct
-                        </span>
-                      ) : (
-                        <span style={{ 
-                          color: '#ef4444', 
-                          fontSize: '0.875rem', 
-                          fontWeight: '600',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.25rem'
-                        }}>
-                          ❌ Incorrect
-                        </span>
-                      )}
+                    <div className={`history-status ${item.is_correct ? 'correct' : 'incorrect'}`}>
+                      <span>{item.is_correct ? '✅' : '❌'}</span>
+                      {item.is_correct ? 'Correct' : 'Incorrect'}
                     </div>
                   </div>
                 </div>
               ))}
               
               {problemHistory.length === 0 && (
-                <div style={{ 
-                  textAlign: 'center', 
-                  padding: '3rem', 
-                  color: '#000000',
-                  backgroundColor: '#f9fafb',
-                  borderRadius: '0.75rem',
-                  border: '1px solid #e2e8f0'
-                }}>
-                  <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📝</div>
-                  <p style={{ fontSize: '1.125rem', margin: 0 }}>No problems attempted yet.</p>
-                  <p style={{ fontSize: '0.875rem', margin: '0.5rem 0 0 0' }}>Start practicing to see your history here!</p>
+                <div className="history-empty-state">
+                  <div className="history-empty-icon">📝</div>
+                  <p className="history-empty-title">No problems attempted yet.</p>
+                  <p className="history-empty-subtitle">Start practicing to see your history here!</p>
                 </div>
               )}
             </div>
@@ -1017,30 +575,17 @@ export default function Home() {
         {/* Stats View */}
         {currentView === 'stats' && (
           <div>
-            <div style={{ 
-              backgroundColor: '#f9fafb', 
-              borderRadius: '0.75rem', 
-              border: '1px solid #e2e8f0', 
-              padding: '1.5rem',
-              marginBottom: '1.5rem'
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <div style={{ 
-                  width: '2.5rem', 
-                  height: '2.5rem', 
-                  background: 'linear-gradient(to right, #8b5cf6, #3b82f6)', 
-                  borderRadius: '0.5rem', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center' 
-                }}>
-                  <span style={{ fontSize: '1.25rem' }}>📊</span>
+            {/* Stats Header */}
+            <div className="stats-header-card">
+              <div className="stats-header-content">
+                <div className="stats-header-icon">
+                  <span>📊</span>
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: '600', color: '#000000', margin: 0 }}>
+                  <h3 className="stats-header-title">
                     Your Statistics
                   </h3>
-                  <p style={{ color: '#000000', fontSize: '0.875rem', margin: 0 }}>
+                  <p className="stats-header-subtitle">
                     Track your learning progress
                   </p>
                 </div>
@@ -1048,517 +593,189 @@ export default function Home() {
             </div>
             
             {/* Overall Stats */}
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
-              gap: '1rem', 
-              marginBottom: '2rem' 
-            }}>
-              <div style={{ 
-                backgroundColor: '#f9fafb', 
-                borderRadius: '0.75rem', 
-                border: '1px solid #e2e8f0', 
-                padding: '2rem', 
-                textAlign: 'center' 
-              }}>
-                <div style={{ fontSize: '3rem', fontWeight: 'bold', color: '#3b82f6', marginBottom: '0.5rem' }}>
+            <div className="stats-overview-cards">
+              <div className="stats-overview-card">
+                <div className="stats-overview-number">
                   {score.total > 0 ? Math.round((score.correct / score.total) * 100) : 0}%
                 </div>
-                <div style={{ fontSize: '1rem', color: '#000000', fontWeight: '600' }}>Accuracy Rate</div>
+                <div className="stats-overview-label">Accuracy Rate</div>
               </div>
               
-              <div style={{ 
-                backgroundColor: '#f9fafb', 
-                borderRadius: '0.75rem', 
-                border: '1px solid #e2e8f0', 
-                padding: '2rem', 
-                textAlign: 'center' 
-              }}>
-                <div style={{ fontSize: '3rem', fontWeight: 'bold', color: '#10b981', marginBottom: '0.5rem' }}>
+              <div className="stats-overview-card">
+                <div className="stats-overview-number streak">
                   {score.streak}
                 </div>
-                <div style={{ fontSize: '1rem', color: '#000000', fontWeight: '600' }}>Current Streak</div>
+                <div className="stats-overview-label">Current Streak</div>
               </div>
               
-              <div style={{ 
-                backgroundColor: '#f9fafb', 
-                borderRadius: '0.75rem', 
-                border: '1px solid #e2e8f0', 
-                padding: '2rem', 
-                textAlign: 'center' 
-              }}>
-                <div style={{ fontSize: '3rem', fontWeight: 'bold', color: '#f59e0b', marginBottom: '0.5rem' }}>
+              <div className="stats-overview-card">
+                <div className="stats-overview-number total">
                   {score.total}
                 </div>
-                <div style={{ fontSize: '1rem', color: '#000000', fontWeight: '600' }}>Total Problems</div>
+                <div className="stats-overview-label">Total Problems</div>
               </div>
             </div>
             
             {/* Achievement Badges */}
-            <div style={{ 
-              backgroundColor: '#f9fafb', 
-              borderRadius: '0.75rem', 
-              border: '1px solid #e2e8f0', 
-              padding: '1.5rem' 
-            }}>
-              <h4 style={{ 
-                fontSize: '1.125rem', 
-                fontWeight: '600', 
-                color: '#000000', 
-                margin: '0 0 1rem 0',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem'
-              }}>
+            <div className="achievements-card">
+              <h4 className="achievements-title">
                 🏆 Achievements
               </h4>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+              <div className="achievements-grid">
                 {/* First Problem Achievement */}
                 <div 
-                  style={{ 
-                    backgroundColor: score.total >= 1 ? 'rgba(34, 197, 94, 0.3)' : 'rgba(107, 114, 128, 0.1)', 
-                    color: score.total >= 1 ? '#16a34a' : '#9ca3af', 
-                    padding: '0.5rem 1rem', 
-                    borderRadius: '1rem', 
-                    fontSize: '0.875rem', 
-                    fontWeight: '600',
-                    border: `2px solid ${score.total >= 1 ? '#22c55e' : '#d1d5db'}`,
-                    cursor: 'pointer',
-                    position: 'relative',
-                    transition: 'all 0.2s ease',
-                    opacity: score.total >= 1 ? 1 : 0.5,
-                    transform: score.total >= 1 ? 'scale(1.02)' : 'scale(1)',
-                    boxShadow: score.total >= 1 ? '0 4px 12px rgba(34, 197, 94, 0.3)' : 'none'
-                  }}
+                  className={`achievement-badge ${score.total >= 1 ? 'unlocked' : 'locked'}`}
                   onMouseEnter={() => setHoveredAchievement('first-problem')}
                   onMouseLeave={() => setHoveredAchievement(null)}
                 >
-                  🎯 First Problem
+                  <div className="achievement-icon">🎯</div>
+                  <div className="achievement-name">First Problem</div>
+                  <div className="achievement-description">
+                    {score.total >= 1 ? 'Completed!' : 'Solve 1 problem'}
+                  </div>
                   {hoveredAchievement === 'first-problem' && (
-                    <div style={{
-                      position: 'absolute',
-                      bottom: '100%',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      backgroundColor: '#1f2937',
-                      color: 'white',
-                      padding: '0.5rem 0.75rem',
-                      borderRadius: '0.375rem',
-                      fontSize: '0.75rem',
-                      fontWeight: '500',
-                      whiteSpace: 'nowrap',
-                      zIndex: 1000,
-                      marginBottom: '0.5rem',
-                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                      border: '1px solid #374151'
-                    }}>
+                    <div className="achievement-tooltip">
                       {score.total >= 1 ? 'Completed! You solved your first math problem.' : 'Solve 1 math problem to unlock this achievement.'}
-                      <div style={{
-                        position: 'absolute',
-                        top: '100%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        width: 0,
-                        height: 0,
-                        borderLeft: '4px solid transparent',
-                        borderRight: '4px solid transparent',
-                        borderTop: '4px solid #1f2937'
-                      }}></div>
+                      <div className="achievement-tooltip-arrow"></div>
                     </div>
                   )}
                 </div>
                 
                 {/* Quick Learner Achievement */}
                 <div 
-                  style={{ 
-                    backgroundColor: score.correct >= 5 ? 'rgba(59, 130, 246, 0.3)' : 'rgba(107, 114, 128, 0.1)', 
-                    color: score.correct >= 5 ? '#2563eb' : '#9ca3af', 
-                    padding: '0.5rem 1rem', 
-                    borderRadius: '1rem', 
-                    fontSize: '0.875rem', 
-                    fontWeight: '600',
-                    border: `2px solid ${score.correct >= 5 ? '#3b82f6' : '#d1d5db'}`,
-                    cursor: 'pointer',
-                    position: 'relative',
-                    transition: 'all 0.2s ease',
-                    opacity: score.correct >= 5 ? 1 : 0.5,
-                    transform: score.correct >= 5 ? 'scale(1.02)' : 'scale(1)',
-                    boxShadow: score.correct >= 5 ? '0 4px 12px rgba(59, 130, 246, 0.3)' : 'none'
-                  }}
+                  className={`achievement-badge ${score.correct >= 5 ? 'unlocked' : 'locked'}`}
                   onMouseEnter={() => setHoveredAchievement('quick-learner')}
                   onMouseLeave={() => setHoveredAchievement(null)}
                 >
-                  🧠 Quick Learner
+                  <div className="achievement-icon">🧠</div>
+                  <div className="achievement-name">Quick Learner</div>
+                  <div className="achievement-description">
+                    {score.correct >= 5 ? 'Completed!' : 'Solve 5 correctly'}
+                  </div>
                   {hoveredAchievement === 'quick-learner' && (
-                    <div style={{
-                      position: 'absolute',
-                      bottom: '100%',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      backgroundColor: '#1f2937',
-                      color: 'white',
-                      padding: '0.5rem 0.75rem',
-                      borderRadius: '0.375rem',
-                      fontSize: '0.75rem',
-                      fontWeight: '500',
-                      whiteSpace: 'nowrap',
-                      zIndex: 1000,
-                      marginBottom: '0.5rem',
-                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                      border: '1px solid #374151'
-                    }}>
+                    <div className="achievement-tooltip">
                       {score.correct >= 5 ? 'Completed! You\'ve solved 5 problems correctly.' : 'Solve 5 problems correctly to unlock this achievement.'}
-                      <div style={{
-                        position: 'absolute',
-                        top: '100%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        width: 0,
-                        height: 0,
-                        borderLeft: '4px solid transparent',
-                        borderRight: '4px solid transparent',
-                        borderTop: '4px solid #1f2937'
-                      }}></div>
+                      <div className="achievement-tooltip-arrow"></div>
                     </div>
                   )}
                 </div>
                 
                 {/* Hot Streak Achievement */}
                 <div 
-                  style={{ 
-                    backgroundColor: score.streak >= 3 ? 'rgba(245, 158, 11, 0.3)' : 'rgba(107, 114, 128, 0.1)', 
-                    color: score.streak >= 3 ? '#d97706' : '#9ca3af', 
-                    padding: '0.5rem 1rem', 
-                    borderRadius: '1rem', 
-                    fontSize: '0.875rem', 
-                    fontWeight: '600',
-                    border: `2px solid ${score.streak >= 3 ? '#f59e0b' : '#d1d5db'}`,
-                    cursor: 'pointer',
-                    position: 'relative',
-                    transition: 'all 0.2s ease',
-                    opacity: score.streak >= 3 ? 1 : 0.5,
-                    transform: score.streak >= 3 ? 'scale(1.02)' : 'scale(1)',
-                    boxShadow: score.streak >= 3 ? '0 4px 12px rgba(245, 158, 11, 0.3)' : 'none'
-                  }}
+                  className={`achievement-badge ${score.streak >= 3 ? 'unlocked' : 'locked'}`}
                   onMouseEnter={() => setHoveredAchievement('hot-streak')}
                   onMouseLeave={() => setHoveredAchievement(null)}
                 >
-                  🔥 Hot Streak
+                  <div className="achievement-icon">🔥</div>
+                  <div className="achievement-name">Hot Streak</div>
+                  <div className="achievement-description">
+                    {score.streak >= 3 ? 'Completed!' : 'Get 3 streak'}
+                  </div>
                   {hoveredAchievement === 'hot-streak' && (
-                    <div style={{
-                      position: 'absolute',
-                      bottom: '100%',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      backgroundColor: '#1f2937',
-                      color: 'white',
-                      padding: '0.5rem 0.75rem',
-                      borderRadius: '0.375rem',
-                      fontSize: '0.75rem',
-                      fontWeight: '500',
-                      whiteSpace: 'nowrap',
-                      zIndex: 1000,
-                      marginBottom: '0.5rem',
-                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                      border: '1px solid #374151'
-                    }}>
+                    <div className="achievement-tooltip">
                       {score.streak >= 3 ? 'Completed! You have a streak of 3 correct answers.' : 'Get 3 correct answers in a row to unlock this achievement.'}
-                      <div style={{
-                        position: 'absolute',
-                        top: '100%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        width: 0,
-                        height: 0,
-                        borderLeft: '4px solid transparent',
-                        borderRight: '4px solid transparent',
-                        borderTop: '4px solid #1f2937'
-                      }}></div>
+                      <div className="achievement-tooltip-arrow"></div>
                     </div>
                   )}
                 </div>
                 
                 {/* Math Master Achievement */}
                 <div 
-                  style={{ 
-                    backgroundColor: score.total >= 10 ? 'rgba(139, 92, 246, 0.3)' : 'rgba(107, 114, 128, 0.1)', 
-                    color: score.total >= 10 ? '#7c3aed' : '#9ca3af', 
-                    padding: '0.5rem 1rem', 
-                    borderRadius: '1rem', 
-                    fontSize: '0.875rem', 
-                    fontWeight: '600',
-                    border: `2px solid ${score.total >= 10 ? '#8b5cf6' : '#d1d5db'}`,
-                    cursor: 'pointer',
-                    position: 'relative',
-                    transition: 'all 0.2s ease',
-                    opacity: score.total >= 10 ? 1 : 0.5,
-                    transform: score.total >= 10 ? 'scale(1.02)' : 'scale(1)',
-                    boxShadow: score.total >= 10 ? '0 4px 12px rgba(139, 92, 246, 0.3)' : 'none'
-                  }}
+                  className={`achievement-badge ${score.total >= 10 ? 'unlocked' : 'locked'}`}
                   onMouseEnter={() => setHoveredAchievement('math-master')}
                   onMouseLeave={() => setHoveredAchievement(null)}
                 >
-                  🏆 Math Master
+                  <div className="achievement-icon">🏆</div>
+                  <div className="achievement-name">Math Master</div>
+                  <div className="achievement-description">
+                    {score.total >= 10 ? 'Completed!' : 'Solve 10 problems'}
+                  </div>
                   {hoveredAchievement === 'math-master' && (
-                    <div style={{
-                      position: 'absolute',
-                      bottom: '100%',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      backgroundColor: '#1f2937',
-                      color: 'white',
-                      padding: '0.5rem 0.75rem',
-                      borderRadius: '0.375rem',
-                      fontSize: '0.75rem',
-                      fontWeight: '500',
-                      whiteSpace: 'nowrap',
-                      zIndex: 1000,
-                      marginBottom: '0.5rem',
-                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                      border: '1px solid #374151'
-                    }}>
+                    <div className="achievement-tooltip">
                       {score.total >= 10 ? 'Completed! You\'ve solved 10 problems total.' : 'Solve 10 problems total to unlock this achievement.'}
-                      <div style={{
-                        position: 'absolute',
-                        top: '100%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        width: 0,
-                        height: 0,
-                        borderLeft: '4px solid transparent',
-                        borderRight: '4px solid transparent',
-                        borderTop: '4px solid #1f2937'
-                      }}></div>
+                      <div className="achievement-tooltip-arrow"></div>
                     </div>
                   )}
                 </div>
                 
                 {/* Perfect Score Achievement */}
                 <div 
-                  style={{ 
-                    backgroundColor: score.total >= 5 && score.correct === score.total ? 'rgba(236, 72, 153, 0.3)' : 'rgba(107, 114, 128, 0.1)', 
-                    color: score.total >= 5 && score.correct === score.total ? '#db2777' : '#9ca3af', 
-                    padding: '0.5rem 1rem', 
-                    borderRadius: '1rem', 
-                    fontSize: '0.875rem', 
-                    fontWeight: '600',
-                    border: `2px solid ${score.total >= 5 && score.correct === score.total ? '#ec4899' : '#d1d5db'}`,
-                    cursor: 'pointer',
-                    position: 'relative',
-                    transition: 'all 0.2s ease',
-                    opacity: score.total >= 5 && score.correct === score.total ? 1 : 0.5,
-                    transform: score.total >= 5 && score.correct === score.total ? 'scale(1.02)' : 'scale(1)',
-                    boxShadow: score.total >= 5 && score.correct === score.total ? '0 4px 12px rgba(236, 72, 153, 0.3)' : 'none'
-                  }}
+                  className={`achievement-badge ${score.total >= 5 && score.correct === score.total ? 'unlocked' : 'locked'}`}
                   onMouseEnter={() => setHoveredAchievement('perfect-score')}
                   onMouseLeave={() => setHoveredAchievement(null)}
                 >
-                  💯 Perfect Score
+                  <div className="achievement-icon">💯</div>
+                  <div className="achievement-name">Perfect Score</div>
+                  <div className="achievement-description">
+                    {score.total >= 5 && score.correct === score.total ? 'Completed!' : 'Get perfect score'}
+                  </div>
                   {hoveredAchievement === 'perfect-score' && (
-                    <div style={{
-                      position: 'absolute',
-                      bottom: '100%',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      backgroundColor: '#1f2937',
-                      color: 'white',
-                      padding: '0.5rem 0.75rem',
-                      borderRadius: '0.375rem',
-                      fontSize: '0.75rem',
-                      fontWeight: '500',
-                      whiteSpace: 'nowrap',
-                      zIndex: 1000,
-                      marginBottom: '0.5rem',
-                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                      border: '1px solid #374151'
-                    }}>
+                    <div className="achievement-tooltip">
                       {score.total >= 5 && score.correct === score.total ? 'Completed! You have a perfect score!' : 'Solve 5+ problems with 100% accuracy to unlock this achievement.'}
-                      <div style={{
-                        position: 'absolute',
-                        top: '100%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        width: 0,
-                        height: 0,
-                        borderLeft: '4px solid transparent',
-                        borderRight: '4px solid transparent',
-                        borderTop: '4px solid #1f2937'
-                      }}></div>
+                      <div className="achievement-tooltip-arrow"></div>
                     </div>
                   )}
                 </div>
                 
                 {/* Hint Master Achievement */}
                 <div 
-                  style={{ 
-                    backgroundColor: score.total >= 3 ? 'rgba(16, 185, 129, 0.3)' : 'rgba(107, 114, 128, 0.1)', 
-                    color: score.total >= 3 ? '#059669' : '#9ca3af', 
-                    padding: '0.5rem 1rem', 
-                    borderRadius: '1rem', 
-                    fontSize: '0.875rem', 
-                    fontWeight: '600',
-                    border: `2px solid ${score.total >= 3 ? '#10b981' : '#d1d5db'}`,
-                    cursor: 'pointer',
-                    position: 'relative',
-                    transition: 'all 0.2s ease',
-                    opacity: score.total >= 3 ? 1 : 0.5,
-                    transform: score.total >= 3 ? 'scale(1.02)' : 'scale(1)',
-                    boxShadow: score.total >= 3 ? '0 4px 12px rgba(16, 185, 129, 0.3)' : 'none'
-                  }}
+                  className={`achievement-badge ${score.total >= 3 ? 'unlocked' : 'locked'}`}
                   onMouseEnter={() => setHoveredAchievement('hint-master')}
                   onMouseLeave={() => setHoveredAchievement(null)}
                 >
-                  💡 Hint Master
+                  <div className="achievement-icon">💡</div>
+                  <div className="achievement-name">Hint Master</div>
+                  <div className="achievement-description">
+                    {score.total >= 3 ? 'Completed!' : 'Solve 3 problems'}
+                  </div>
                   {hoveredAchievement === 'hint-master' && (
-                    <div style={{
-                      position: 'absolute',
-                      bottom: '100%',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      backgroundColor: '#1f2937',
-                      color: 'white',
-                      padding: '0.5rem 0.75rem',
-                      borderRadius: '0.375rem',
-                      fontSize: '0.75rem',
-                      fontWeight: '500',
-                      whiteSpace: 'nowrap',
-                      zIndex: 1000,
-                      marginBottom: '0.5rem',
-                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                      border: '1px solid #374151'
-                    }}>
+                    <div className="achievement-tooltip">
                       {score.total >= 3 ? 'Completed! You\'ve used hints effectively.' : 'Solve 3+ problems using hints to unlock this achievement.'}
-                      <div style={{
-                        position: 'absolute',
-                        top: '100%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        width: 0,
-                        height: 0,
-                        borderLeft: '4px solid transparent',
-                        borderRight: '4px solid transparent',
-                        borderTop: '4px solid #1f2937'
-                      }}></div>
+                      <div className="achievement-tooltip-arrow"></div>
                     </div>
                   )}
                 </div>
                 
                 {/* Speed Demon Achievement */}
                 <div 
-                  style={{ 
-                    backgroundColor: score.streak >= 5 ? 'rgba(239, 68, 68, 0.3)' : 'rgba(107, 114, 128, 0.1)', 
-                    color: score.streak >= 5 ? '#dc2626' : '#9ca3af', 
-                    padding: '0.5rem 1rem', 
-                    borderRadius: '1rem', 
-                    fontSize: '0.875rem', 
-                    fontWeight: '600',
-                    border: `2px solid ${score.streak >= 5 ? '#ef4444' : '#d1d5db'}`,
-                    cursor: 'pointer',
-                    position: 'relative',
-                    transition: 'all 0.2s ease',
-                    opacity: score.streak >= 5 ? 1 : 0.5,
-                    transform: score.streak >= 5 ? 'scale(1.02)' : 'scale(1)',
-                    boxShadow: score.streak >= 5 ? '0 4px 12px rgba(239, 68, 68, 0.3)' : 'none'
-                  }}
+                  className={`achievement-badge ${score.streak >= 5 ? 'unlocked' : 'locked'}`}
                   onMouseEnter={() => setHoveredAchievement('speed-demon')}
                   onMouseLeave={() => setHoveredAchievement(null)}
                 >
-                  ⚡ Speed Demon
+                  <div className="achievement-icon">⚡</div>
+                  <div className="achievement-name">Speed Demon</div>
+                  <div className="achievement-description">
+                    {score.streak >= 5 ? 'Completed!' : 'Get 5 streak'}
+                  </div>
                   {hoveredAchievement === 'speed-demon' && (
-                    <div style={{
-                      position: 'absolute',
-                      bottom: '100%',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      backgroundColor: '#1f2937',
-                      color: 'white',
-                      padding: '0.5rem 0.75rem',
-                      borderRadius: '0.375rem',
-                      fontSize: '0.75rem',
-                      fontWeight: '500',
-                      whiteSpace: 'nowrap',
-                      zIndex: 1000,
-                      marginBottom: '0.5rem',
-                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                      border: '1px solid #374151'
-                    }}>
+                    <div className="achievement-tooltip">
                       {score.streak >= 5 ? 'Completed! You have an amazing streak!' : 'Get 5 correct answers in a row to unlock this achievement.'}
-                      <div style={{
-                        position: 'absolute',
-                        top: '100%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        width: 0,
-                        height: 0,
-                        borderLeft: '4px solid transparent',
-                        borderRight: '4px solid transparent',
-                        borderTop: '4px solid #1f2937'
-                      }}></div>
+                      <div className="achievement-tooltip-arrow"></div>
                     </div>
                   )}
                 </div>
                 
                 {/* Problem Solver Achievement */}
                 <div 
-                  style={{ 
-                    backgroundColor: score.total >= 20 ? 'rgba(168, 85, 247, 0.3)' : 'rgba(107, 114, 128, 0.1)', 
-                    color: score.total >= 20 ? '#9333ea' : '#9ca3af', 
-                    padding: '0.5rem 1rem', 
-                    borderRadius: '1rem', 
-                    fontSize: '0.875rem', 
-                    fontWeight: '600',
-                    border: `2px solid ${score.total >= 20 ? '#a855f7' : '#d1d5db'}`,
-                    cursor: 'pointer',
-                    position: 'relative',
-                    transition: 'all 0.2s ease',
-                    opacity: score.total >= 20 ? 1 : 0.5,
-                    transform: score.total >= 20 ? 'scale(1.02)' : 'scale(1)',
-                    boxShadow: score.total >= 20 ? '0 4px 12px rgba(168, 85, 247, 0.3)' : 'none'
-                  }}
+                  className={`achievement-badge ${score.total >= 20 ? 'unlocked' : 'locked'}`}
                   onMouseEnter={() => setHoveredAchievement('problem-solver')}
                   onMouseLeave={() => setHoveredAchievement(null)}
                 >
-                  🧩 Problem Solver
+                  <div className="achievement-icon">🧩</div>
+                  <div className="achievement-name">Problem Solver</div>
+                  <div className="achievement-description">
+                    {score.total >= 20 ? 'Completed!' : 'Solve 20 problems'}
+                  </div>
                   {hoveredAchievement === 'problem-solver' && (
-                    <div style={{
-                      position: 'absolute',
-                      bottom: '100%',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      backgroundColor: '#1f2937',
-                      color: 'white',
-                      padding: '0.5rem 0.75rem',
-                      borderRadius: '0.375rem',
-                      fontSize: '0.75rem',
-                      fontWeight: '500',
-                      whiteSpace: 'nowrap',
-                      zIndex: 1000,
-                      marginBottom: '0.5rem',
-                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                      border: '1px solid #374151'
-                    }}>
+                    <div className="achievement-tooltip">
                       {score.total >= 20 ? 'Completed! You\'re a true problem solver!' : 'Solve 20 problems total to unlock this achievement.'}
-                      <div style={{
-                        position: 'absolute',
-                        top: '100%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        width: 0,
-                        height: 0,
-                        borderLeft: '4px solid transparent',
-                        borderRight: '4px solid transparent',
-                        borderTop: '4px solid #1f2937'
-                      }}></div>
+                      <div className="achievement-tooltip-arrow"></div>
                     </div>
                   )}
                 </div>
                 
                 {score.total === 0 && (
-                  <div style={{ 
-                    color: '#6b7280', 
-                    padding: '0.5rem 1rem', 
-                    fontSize: '0.875rem' 
-                  }}>
+                  <div className="achievements-empty-text">
                     Complete problems to unlock achievements!
                   </div>
                 )}
