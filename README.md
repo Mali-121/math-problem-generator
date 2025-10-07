@@ -73,8 +73,7 @@ For testing purposes, you can use these public Supabase credentials:
 
 ## ✨ Features
 
-### Core Features
-- ✅ **AI Problem Generation** - Dynamic math word problems using Gemini AI
+### Additional Features
 - ✅ **Difficulty Levels** - Easy, Medium, and Hard problem variations
 - ✅ **Problem Types** - Addition, subtraction, multiplication, division, and mixed operations
 - ✅ **Intelligent Hint System** - Two-stage AI-powered hints (pre-generated + dynamic)
