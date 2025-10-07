@@ -12,12 +12,12 @@ export async function POST(request: NextRequest) {
 
     // handle different actions
     if (action === 'generate') {
-      const { difficulty = 'easy', problemType = 'mixed' } = body
-      return await generateProblem(difficulty, problemType)
+      const { difficulty = 'easy', problemType = 'mixed', userSessionId } = body
+      return await generateProblem(difficulty, problemType, userSessionId)
     } 
     else if (action === 'submit') {
-      const { sessionId, userAnswer, hintsUsed } = body
-      return await submitAnswer(sessionId, userAnswer, hintsUsed || 0)
+      const { sessionId, userAnswer, hintsUsed, userSessionId } = body
+      return await submitAnswer(sessionId, userAnswer, hintsUsed || 0, userSessionId)
     } 
     else if (action === 'getHistory') {
       return await getProblemHistory()
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-async function generateProblem(difficulty: string, problemType: string) {
+async function generateProblem(difficulty: string, problemType: string, userSessionId: string) {
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" })
     
@@ -128,8 +128,8 @@ Make sure the problem is clear, age-appropriate, and has a single correct numeri
         correct_answer: problemData.final_answer,
         difficulty: problemData.difficulty,
         problem_type: problemData.problem_type,
-        steps: problemData.steps,
-        hints: problemData.hints
+        hints: problemData.hints,
+        user_session_id: userSessionId
       })
       .select()
       .single()
@@ -158,7 +158,7 @@ Make sure the problem is clear, age-appropriate, and has a single correct numeri
   }
 }
 
-async function submitAnswer(sessionId: string, userAnswer: number, hintsUsed: number = 0) {
+async function submitAnswer(sessionId: string, userAnswer: number, hintsUsed: number = 0, userSessionId: string) {
   try {
     // get the original problem
     const { data: session, error: sessionError } = await supabase
@@ -190,6 +190,7 @@ async function submitAnswer(sessionId: string, userAnswer: number, hintsUsed: nu
       .from('math_problem_submissions')
       .insert({
         session_id: sessionId,
+        user_session_id: userSessionId,
         user_answer: userAnswer,
         is_correct: isCorrect,
         feedback_text: feedbackText,
@@ -203,35 +204,23 @@ async function submitAnswer(sessionId: string, userAnswer: number, hintsUsed: nu
       return NextResponse.json({ error: 'Failed to save submission' }, { status: 500 })
     }
 
-    // calculate score and streak
-    const { data: submissions } = await supabase
-      .from('math_problem_submissions')
-      .select('is_correct, created_at')
-      .order('created_at', { ascending: false })
-
-    const total = submissions?.length || 0
-    const correct = submissions?.filter(s => s.is_correct).length || 0
-    
-    // Calculate current streak
-    let streak = 0
-    if (submissions) {
-      for (const submission of submissions) {
-        if (submission.is_correct) {
-          streak++
-        } else {
-          break
-        }
-      }
-    }
-
+    // Return the problem data for client-side score calculation
+    // The client will handle user-specific scoring using localStorage
     return NextResponse.json({
       success: true,
       isCorrect,
       feedback: feedbackText,
-      score: {
-        correct,
-        total,
-        streak
+      problemData: {
+        id: sessionId,
+        problem_text: session.problem_text,
+        correct_answer: session.correct_answer,
+        difficulty: session.difficulty,
+        problem_type: session.problem_type,
+        user_answer: userAnswer,
+        is_correct: isCorrect,
+        hints_used: hintsUsed,
+        total_hints: session.hints?.length || 0,
+        created_at: new Date().toISOString()
       }
     })
 
@@ -243,72 +232,12 @@ async function submitAnswer(sessionId: string, userAnswer: number, hintsUsed: nu
 
 async function getProblemHistory() {
   try {
-    // get recent submissions with session details
-    const { data: submissions, error } = await supabase
-      .from('math_problem_submissions')
-      .select(`
-        id,
-        user_answer,
-        is_correct,
-        feedback_text,
-        created_at,
-        difficulty,
-        problem_type,
-        hints_used,
-        math_problem_sessions (
-          problem_text,
-          correct_answer,
-          difficulty,
-          problem_type,
-          hints
-        )
-      `)
-      .order('created_at', { ascending: false })
-      .limit(50)
-
-    if (error) {
-      console.error('History error:', error)
-      return NextResponse.json({ error: 'Failed to get history' }, { status: 500 })
-    }
-
-    // format the data
-    const history = submissions?.map(sub => ({
-      id: sub.id,
-      problem_text: (sub.math_problem_sessions as any)?.problem_text || '',
-      user_answer: sub.user_answer,
-      correct_answer: (sub.math_problem_sessions as any)?.correct_answer || 0,
-      is_correct: sub.is_correct,
-      difficulty: (sub.math_problem_sessions as any)?.difficulty || sub.difficulty || 'easy',
-      problem_type: (sub.math_problem_sessions as any)?.problem_type || sub.problem_type || 'mixed',
-      hints_used: sub.hints_used || 0,
-      total_hints: (sub.math_problem_sessions as any)?.hints?.length || 0,
-      created_at: sub.created_at
-    })) || []
-
-    // Calculate overall score
-    const total = submissions?.length || 0
-    const correct = submissions?.filter(s => s.is_correct).length || 0
-    
-    // Calculate current streak
-    let streak = 0
-    if (submissions) {
-      for (const submission of submissions) {
-        if (submission.is_correct) {
-          streak++
-        } else {
-          break
-        }
-      }
-    }
-
+    // Since we're now using localStorage for user-specific data,
+    // this function will return a simple success response
+    // The client will handle loading history from localStorage
     return NextResponse.json({
       success: true,
-      history,
-      score: {
-        correct,
-        total,
-        streak
-      }
+      message: 'History is now managed client-side using localStorage'
     })
 
   } catch (error) {

@@ -1,6 +1,17 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { 
+  getUserSession, 
+  getUserStats, 
+  updateUserStats, 
+  getUserAchievements, 
+  checkAndUnlockAchievements,
+  getUserProblemHistory,
+  addToUserHistory,
+  UserStats,
+  UserAchievement
+} from '../lib/userSession'
 
 // TODO: maybe extract these interfaces to a separate file?
 interface MathProblem {
@@ -38,8 +49,9 @@ export default function Home() {
   const [selectedDifficulty, setSelectedDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy')
   const [selectedProblemType, setSelectedProblemType] = useState<'addition' | 'subtraction' | 'multiplication' | 'division' | 'mixed'>('mixed')
   
-  // stats
-  const [score, setScore] = useState({ correct: 0, total: 0, streak: 0 })
+  // User-specific stats and achievements (from localStorage)
+  const [score, setScore] = useState<UserStats>({ correct: 0, total: 0, streak: 0 })
+  const [achievements, setAchievements] = useState<UserAchievement[]>([])
   
   // hints
   const [hints, setHints] = useState<string[]>([])
@@ -53,43 +65,34 @@ export default function Home() {
   // navigation
   const [currentView, setCurrentView] = useState<'main' | 'history' | 'stats'>('main')
   const [problemHistory, setProblemHistory] = useState<ProblemHistory[]>([])
+  const [showDebugInfo, setShowDebugInfo] = useState(false)
 
-  // load problem history on component mount
+  // Initialize user session and load user data
   useEffect(() => {
-    loadProblemHistory()
+    // Get or create user session
+    const userSession = getUserSession()
+    console.log('User session:', userSession.sessionId)
+    
+    // Load user stats and achievements
+    const userStats = getUserStats()
+    const userAchievements = getUserAchievements()
+    
+    setScore(userStats)
+    setAchievements(userAchievements)
+    
+    // Load user problem history
+    loadUserProblemHistory()
+    
+    // Enable debug mode in development
+    if (process.env.NODE_ENV === 'development') {
+      setShowDebugInfo(true)
+    }
   }, [])
 
-  // refresh history when switching to history view
-  useEffect(() => {
-    if (currentView === 'history') {
-      loadProblemHistory()
-    }
-  }, [currentView])
-
-  const loadProblemHistory = async () => {
-    setIsRefreshingHistory(true)
-    try {
-      console.log('Loading problem history...') // Debug log
-      const response = await fetch('/api/math-problem', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'getHistory' })
-      })
-      const data = await response.json()
-      console.log('History data received:', data) // Debug log
-      if (data.success) {
-        setScore(data.score)
-        setProblemHistory(data.history)
-        console.log('History updated successfully') // Debug log
-      } else {
-        console.error('API returned error:', data.error)
-      }
-    } 
-    catch (error) {
-      console.error('Failed to load history:', error)
-    } finally {
-      setIsRefreshingHistory(false)
-    }
+  // Load user problem history from localStorage
+  const loadUserProblemHistory = () => {
+    const history = getUserProblemHistory()
+    setProblemHistory(history)
   }
 
   const generateProblem = async () => {
@@ -104,13 +107,15 @@ export default function Home() {
     setIsGeneratingHint(false)
     
     try {
+      const userSession = getUserSession()
       const response = await fetch('/api/math-problem', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           action: 'generate',
           difficulty: selectedDifficulty,
-          problemType: selectedProblemType
+          problemType: selectedProblemType,
+          userSessionId: userSession.sessionId
         })
       })
       
@@ -138,6 +143,7 @@ export default function Home() {
     
     setIsSubmitting(true)
     try {
+      const userSession = getUserSession()
       const response = await fetch('/api/math-problem', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -145,7 +151,8 @@ export default function Home() {
           action: 'submit',
           sessionId: sessionId,
           userAnswer: parseFloat(userAnswer),
-          hintsUsed: hints.length
+          hintsUsed: hints.length,
+          userSessionId: userSession.sessionId
         })
       })
       
@@ -153,13 +160,35 @@ export default function Home() {
       if (data.success) {
         setIsCorrect(data.isCorrect)
         setFeedback(data.feedback)
-        setScore(data.score)
+        
+        // Update user stats based on the submission
+        const newStats = { ...score }
+        newStats.total += 1
+        if (data.isCorrect) {
+          newStats.correct += 1
+          newStats.streak += 1
+        } else {
+          newStats.streak = 0
+        }
+        
+        // Save updated stats to localStorage
+        updateUserStats(newStats)
+        setScore(newStats)
+        
+        // Add to user history
+        addToUserHistory(data.problemData)
+        
+        // Check and unlock achievements
+        const updatedAchievements = checkAndUnlockAchievements(newStats)
+        setAchievements(updatedAchievements)
+        
+        // Reload user history
+        loadUserProblemHistory()
+        
         // Track if user submitted wrong answer to enable dynamic hints
         if (!data.isCorrect) {
           setHasSubmittedWrongAnswer(true)
         }
-        // Reload history to show updated hint usage
-        loadProblemHistory()
       } 
       else {
         setFeedback('Failed to submit answer. Please try again.')
@@ -229,6 +258,51 @@ export default function Home() {
           <h1 className="header-title">
           Math Problem Generator
         </h1>
+          {showDebugInfo && (
+            <div style={{ 
+              marginTop: '0.5rem', 
+              fontSize: '0.75rem', 
+              color: '#6b7280',
+              fontFamily: 'monospace',
+              backgroundColor: '#f3f4f6',
+              padding: '0.25rem 0.5rem',
+              borderRadius: '0.25rem',
+              display: 'inline-block'
+            }}>
+              Session: {getUserSession().sessionId.substring(0, 12)}...
+              <button 
+                onClick={() => setShowDebugInfo(false)}
+                style={{ 
+                  marginLeft: '0.5rem', 
+                  fontSize: '0.625rem', 
+                  color: '#9ca3af',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer'
+                }}
+                title="Hide debug info"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+          {!showDebugInfo && (
+            <button 
+              onClick={() => setShowDebugInfo(true)}
+              style={{ 
+                marginTop: '0.5rem', 
+                fontSize: '0.625rem', 
+                color: '#9ca3af',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                textDecoration: 'underline'
+              }}
+              title="Show debug info"
+            >
+              Debug Info
+            </button>
+          )}
         </div>
       </header>
 
@@ -624,18 +698,18 @@ export default function Home() {
               <div className="achievements-grid">
                 {/* First Problem Achievement */}
                 <div 
-                  className={`achievement-badge ${score.total >= 1 ? 'unlocked' : 'locked'}`}
+                  className={`achievement-badge ${achievements.find(a => a.id === 'first-problem')?.unlocked ? 'unlocked' : 'locked'}`}
                   onMouseEnter={() => setHoveredAchievement('first-problem')}
                   onMouseLeave={() => setHoveredAchievement(null)}
                 >
                   <div className="achievement-icon">🎯</div>
                   <div className="achievement-name">First Problem</div>
                   <div className="achievement-description">
-                    {score.total >= 1 ? 'Completed!' : 'Solve 1 problem'}
+                    {achievements.find(a => a.id === 'first-problem')?.unlocked ? 'Completed!' : 'Solve 1 problem'}
                   </div>
                   {hoveredAchievement === 'first-problem' && (
                     <div className="achievement-tooltip">
-                      {score.total >= 1 ? 'Completed! You solved your first math problem.' : 'Solve 1 math problem to unlock this achievement.'}
+                      {achievements.find(a => a.id === 'first-problem')?.unlocked ? 'Completed! You solved your first math problem.' : 'Solve 1 math problem to unlock this achievement.'}
                       <div className="achievement-tooltip-arrow"></div>
                     </div>
                   )}
@@ -643,18 +717,18 @@ export default function Home() {
                 
                 {/* Quick Learner Achievement */}
                 <div 
-                  className={`achievement-badge ${score.correct >= 5 ? 'unlocked' : 'locked'}`}
+                  className={`achievement-badge ${achievements.find(a => a.id === 'quick-learner')?.unlocked ? 'unlocked' : 'locked'}`}
                   onMouseEnter={() => setHoveredAchievement('quick-learner')}
                   onMouseLeave={() => setHoveredAchievement(null)}
                 >
                   <div className="achievement-icon">🧠</div>
                   <div className="achievement-name">Quick Learner</div>
                   <div className="achievement-description">
-                    {score.correct >= 5 ? 'Completed!' : 'Solve 5 correctly'}
+                    {achievements.find(a => a.id === 'quick-learner')?.unlocked ? 'Completed!' : 'Solve 5 correctly'}
                   </div>
                   {hoveredAchievement === 'quick-learner' && (
                     <div className="achievement-tooltip">
-                      {score.correct >= 5 ? 'Completed! You\'ve solved 5 problems correctly.' : 'Solve 5 problems correctly to unlock this achievement.'}
+                      {achievements.find(a => a.id === 'quick-learner')?.unlocked ? 'Completed! You\'ve solved 5 problems correctly.' : 'Solve 5 problems correctly to unlock this achievement.'}
                       <div className="achievement-tooltip-arrow"></div>
                     </div>
                   )}
@@ -662,18 +736,18 @@ export default function Home() {
                 
                 {/* Hot Streak Achievement */}
                 <div 
-                  className={`achievement-badge ${score.streak >= 3 ? 'unlocked' : 'locked'}`}
+                  className={`achievement-badge ${achievements.find(a => a.id === 'hot-streak')?.unlocked ? 'unlocked' : 'locked'}`}
                   onMouseEnter={() => setHoveredAchievement('hot-streak')}
                   onMouseLeave={() => setHoveredAchievement(null)}
                 >
                   <div className="achievement-icon">🔥</div>
                   <div className="achievement-name">Hot Streak</div>
                   <div className="achievement-description">
-                    {score.streak >= 3 ? 'Completed!' : 'Get 3 streak'}
+                    {achievements.find(a => a.id === 'hot-streak')?.unlocked ? 'Completed!' : 'Get 3 streak'}
                   </div>
                   {hoveredAchievement === 'hot-streak' && (
                     <div className="achievement-tooltip">
-                      {score.streak >= 3 ? 'Completed! You have a streak of 3 correct answers.' : 'Get 3 correct answers in a row to unlock this achievement.'}
+                      {achievements.find(a => a.id === 'hot-streak')?.unlocked ? 'Completed! You have a streak of 3 correct answers.' : 'Get 3 correct answers in a row to unlock this achievement.'}
                       <div className="achievement-tooltip-arrow"></div>
                     </div>
                   )}
@@ -681,18 +755,18 @@ export default function Home() {
                 
                 {/* Math Master Achievement */}
                 <div 
-                  className={`achievement-badge ${score.total >= 10 ? 'unlocked' : 'locked'}`}
+                  className={`achievement-badge ${achievements.find(a => a.id === 'math-master')?.unlocked ? 'unlocked' : 'locked'}`}
                   onMouseEnter={() => setHoveredAchievement('math-master')}
                   onMouseLeave={() => setHoveredAchievement(null)}
                 >
                   <div className="achievement-icon">🏆</div>
                   <div className="achievement-name">Math Master</div>
                   <div className="achievement-description">
-                    {score.total >= 10 ? 'Completed!' : 'Solve 10 problems'}
+                    {achievements.find(a => a.id === 'math-master')?.unlocked ? 'Completed!' : 'Solve 10 problems'}
                   </div>
                   {hoveredAchievement === 'math-master' && (
                     <div className="achievement-tooltip">
-                      {score.total >= 10 ? 'Completed! You\'ve solved 10 problems total.' : 'Solve 10 problems total to unlock this achievement.'}
+                      {achievements.find(a => a.id === 'math-master')?.unlocked ? 'Completed! You\'ve solved 10 problems total.' : 'Solve 10 problems total to unlock this achievement.'}
                       <div className="achievement-tooltip-arrow"></div>
                     </div>
                   )}
@@ -700,18 +774,18 @@ export default function Home() {
                 
                 {/* Perfect Score Achievement */}
                 <div 
-                  className={`achievement-badge ${score.total >= 5 && score.correct === score.total ? 'unlocked' : 'locked'}`}
+                  className={`achievement-badge ${achievements.find(a => a.id === 'perfect-score')?.unlocked ? 'unlocked' : 'locked'}`}
                   onMouseEnter={() => setHoveredAchievement('perfect-score')}
                   onMouseLeave={() => setHoveredAchievement(null)}
                 >
                   <div className="achievement-icon">💯</div>
                   <div className="achievement-name">Perfect Score</div>
                   <div className="achievement-description">
-                    {score.total >= 5 && score.correct === score.total ? 'Completed!' : 'Get perfect score'}
+                    {achievements.find(a => a.id === 'perfect-score')?.unlocked ? 'Completed!' : 'Get perfect score'}
                   </div>
                   {hoveredAchievement === 'perfect-score' && (
                     <div className="achievement-tooltip">
-                      {score.total >= 5 && score.correct === score.total ? 'Completed! You have a perfect score!' : 'Solve 5+ problems with 100% accuracy to unlock this achievement.'}
+                      {achievements.find(a => a.id === 'perfect-score')?.unlocked ? 'Completed! You have a perfect score!' : 'Solve 5+ problems with 100% accuracy to unlock this achievement.'}
                       <div className="achievement-tooltip-arrow"></div>
                     </div>
                   )}
@@ -719,18 +793,18 @@ export default function Home() {
                 
                 {/* Hint Master Achievement */}
                 <div 
-                  className={`achievement-badge ${score.total >= 3 ? 'unlocked' : 'locked'}`}
+                  className={`achievement-badge ${achievements.find(a => a.id === 'hint-master')?.unlocked ? 'unlocked' : 'locked'}`}
                   onMouseEnter={() => setHoveredAchievement('hint-master')}
                   onMouseLeave={() => setHoveredAchievement(null)}
                 >
                   <div className="achievement-icon">💡</div>
                   <div className="achievement-name">Hint Master</div>
                   <div className="achievement-description">
-                    {score.total >= 3 ? 'Completed!' : 'Solve 3 problems'}
+                    {achievements.find(a => a.id === 'hint-master')?.unlocked ? 'Completed!' : 'Solve 3 problems'}
                   </div>
                   {hoveredAchievement === 'hint-master' && (
                     <div className="achievement-tooltip">
-                      {score.total >= 3 ? 'Completed! You\'ve used hints effectively.' : 'Solve 3+ problems using hints to unlock this achievement.'}
+                      {achievements.find(a => a.id === 'hint-master')?.unlocked ? 'Completed! You\'ve used hints effectively.' : 'Solve 3+ problems using hints to unlock this achievement.'}
                       <div className="achievement-tooltip-arrow"></div>
                     </div>
                   )}
@@ -738,18 +812,18 @@ export default function Home() {
                 
                 {/* Speed Demon Achievement */}
                 <div 
-                  className={`achievement-badge ${score.streak >= 5 ? 'unlocked' : 'locked'}`}
+                  className={`achievement-badge ${achievements.find(a => a.id === 'speed-demon')?.unlocked ? 'unlocked' : 'locked'}`}
                   onMouseEnter={() => setHoveredAchievement('speed-demon')}
                   onMouseLeave={() => setHoveredAchievement(null)}
                 >
                   <div className="achievement-icon">⚡</div>
                   <div className="achievement-name">Speed Demon</div>
                   <div className="achievement-description">
-                    {score.streak >= 5 ? 'Completed!' : 'Get 5 streak'}
+                    {achievements.find(a => a.id === 'speed-demon')?.unlocked ? 'Completed!' : 'Get 5 streak'}
                   </div>
                   {hoveredAchievement === 'speed-demon' && (
                     <div className="achievement-tooltip">
-                      {score.streak >= 5 ? 'Completed! You have an amazing streak!' : 'Get 5 correct answers in a row to unlock this achievement.'}
+                      {achievements.find(a => a.id === 'speed-demon')?.unlocked ? 'Completed! You have an amazing streak!' : 'Get 5 correct answers in a row to unlock this achievement.'}
                       <div className="achievement-tooltip-arrow"></div>
                     </div>
                   )}
@@ -757,18 +831,18 @@ export default function Home() {
                 
                 {/* Problem Solver Achievement */}
                 <div 
-                  className={`achievement-badge ${score.total >= 20 ? 'unlocked' : 'locked'}`}
+                  className={`achievement-badge ${achievements.find(a => a.id === 'problem-solver')?.unlocked ? 'unlocked' : 'locked'}`}
                   onMouseEnter={() => setHoveredAchievement('problem-solver')}
                   onMouseLeave={() => setHoveredAchievement(null)}
                 >
                   <div className="achievement-icon">🧩</div>
                   <div className="achievement-name">Problem Solver</div>
                   <div className="achievement-description">
-                    {score.total >= 20 ? 'Completed!' : 'Solve 20 problems'}
+                    {achievements.find(a => a.id === 'problem-solver')?.unlocked ? 'Completed!' : 'Solve 20 problems'}
                   </div>
                   {hoveredAchievement === 'problem-solver' && (
                     <div className="achievement-tooltip">
-                      {score.total >= 20 ? 'Completed! You\'re a true problem solver!' : 'Solve 20 problems total to unlock this achievement.'}
+                      {achievements.find(a => a.id === 'problem-solver')?.unlocked ? 'Completed! You\'re a true problem solver!' : 'Solve 20 problems total to unlock this achievement.'}
                       <div className="achievement-tooltip-arrow"></div>
                     </div>
                   )}
